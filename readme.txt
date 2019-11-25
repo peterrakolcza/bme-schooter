@@ -1,0 +1,13 @@
+A program egyelőre, az SDL MacOS Catalina alatt való telepítési nehézségei miatt, még nem igazán látványos! De a belső struktúrája már nagyjából kész van, illetve az init függvények is megfelelően létrehozzák az ablakot, illetve renderer-ik a célzót reprenzátsáló PNG-t, amit utána az egér pozíciójához rendelek. A következő lépés a játékos létrehozása és annak textúrájának betöltése.
+
+A játékot próbálom minél jobban tagolni, ezért logikusan szeparálom a függvényeket külön fájlokba:
+-a main.c fájl csak a fő struct-ot példányosítását, illetve a függvényhívásokat tartalmazza
+-init.c fájl az ablak inicializálást, rajzolást, illetve a képek beolvasásáért felel; ebbe fogom még a pálya és a további komponensek létrehozó függvényét megírni
+-bemenet.c kezeli a billentyűzetről a gombok lenyomásának regisztrálását és az egér x, y koordinátáinak kezelését; ide fogom még a görgő állapotának olvasását megírni
+-kozos.h talán ez a legfontosabb header fájl, ezt minden header fájlban include-loom, így nem kell foglalkoznom azzal, hogy el ne felejtsem az SDL különböző komponenseit külön-külön "behúzni"
+
+Az egyik legfontosabb függvény még így is a main.c-ben található. Ez az 1 függvény az FPS számra figyel, nagyon nem volt könnyű megírni. Az alábbi oldalon található tutorial segítségével sikerült működésre bírni a függvényt: (http://lazyfoo.net/SDL_tutorials/lesson14/index.php). Ezen kívül, megint az alább említett oldal segített nagyon sokat az alap SDL függvényhívások és elemek inicializálásával. Innen töltöttem le a célzó képet is, de a többi grafikus elemet nem fogom innen használni. (https://www.parallelrealities.co.uk/tutorials/bad/bad3.php). 
+
+Hogy elkerüljem a globális változókat, az SDL renderer-t, plusz a játék struktúrát minden függvények paraméterként adom át, így figyelve az átláhatóságra. A végleges dokumentálást a Doxygen segítségével fogom csinálni, aminek implementálását már el is kezdtem.
+
+(Az SDL2-t végülis a Homebrew csomagkezelő letöltése után és a GCC compiler használatával sikerült csak használni. A CLion, illetve az Xcode is SIGNTHR hibával eldobja, mert nincs "aláírva" az SDL. Ezt próbáltam manuális validálással, illetve aláírással felülírni, de semmi különbség. Csak a GCC engedi lefordítani, így egy szövegszerkesztőben és a terminállal tudom fordítani a játékom. Sok fórumozás után úgy gondolom, hogy evvel a problémával nem vagyok egyedül, valószínűleg a MacOS Catalina alatt történt változtatások is nagyban befolyásolják ezt.)

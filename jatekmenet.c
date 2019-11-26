@@ -5,8 +5,8 @@
 #include "jatekmenet.h"
 
 void jatekFrissites(Palya *palya, Peldany *jatekos, Jatek *jatek) {
-    peldanyFrissites(palya, jatekos);
     jatekosFrissites(jatekos, jatek);
+    peldanyFrissites(palya, jatekos);
 }
 
 void peldanyFrissites(Palya *palya, Peldany *jatekos) {

@@ -10,11 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e94dbfdf-e395-4d6a-98f9-e12b7ded4ef9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/jatekmenet.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jatekmenet.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bemenet.c" beforeDir="false" afterPath="$PROJECT_DIR$/bemenet.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/init.c" beforeDir="false" afterPath="$PROJECT_DIR$/init.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/init.h" beforeDir="false" afterPath="$PROJECT_DIR$/init.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jatekmenet.c" beforeDir="false" afterPath="$PROJECT_DIR$/jatekmenet.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kozos.h" beforeDir="false" afterPath="$PROJECT_DIR$/kozos.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
     </list>
@@ -32,6 +33,7 @@
   </component>
   <component name="ProjectId" id="1U7wetZNhufFdCVXXQh5jRr9bXg" />
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -58,7 +60,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1574721039110</updated>
-      <workItem from="1574721040244" duration="4741000" />
+      <workItem from="1574721040244" duration="10996000" />
     </task>
     <servers />
   </component>

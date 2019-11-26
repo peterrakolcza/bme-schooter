@@ -3,28 +3,22 @@
 //
 #include "bemenet.h"
 
-void doKeyUp(SDL_KeyboardEvent *event, Jatek* jatek)
-{
-    if (event->repeat == 0 && event->keysym.scancode < MAX_KEYBOARD_KEYS)
-    {
+void doKeyUp(SDL_KeyboardEvent *event, Jatek* jatek) {
+    if (event->repeat == 0 && event->keysym.scancode < MAX_KEYBOARD_KEYS) {
         jatek->billentyuzet[event->keysym.scancode] = 0;
     }
 }
 
-void doKeyDown(SDL_KeyboardEvent *event, Jatek* jatek)
-{
-    if (event->repeat == 0 && event->keysym.scancode < MAX_KEYBOARD_KEYS)
-    {
+void doKeyDown(SDL_KeyboardEvent *event, Jatek* jatek) {
+    if (event->repeat == 0 && event->keysym.scancode < MAX_KEYBOARD_KEYS) {
         jatek->billentyuzet[event->keysym.scancode] = 1;
     }
 }
 
-void doInput(Jatek *jatek)
-{
+void doInput(Jatek *jatek) {
     SDL_Event event;
 
-    while (SDL_PollEvent(&event))
-    {
+    while (SDL_PollEvent(&event)) {
         switch (event.type)
         {
             case SDL_QUIT:
@@ -45,6 +39,7 @@ void doInput(Jatek *jatek)
     }
 
     SDL_GetMouseState(&jatek->eger.x, &jatek->eger.y);
+    //printf("%d %d", jatek->eger.x, jatek->eger.y);
 }
 
 

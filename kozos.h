@@ -9,6 +9,8 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <SDL2/SDL_image.h>
 
+//#include "debugmalloc.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -36,13 +38,6 @@ typedef struct Texture {
     struct Texture *next;
 } Texture;
 
-typedef struct Jatek {
-    Eger eger;
-    int billentyuzet[MAX_KEYBOARD_KEYS];
-    Texture textureHead, *textureTail;
-    char beSzoveg[MAX_LINE_LENGTH];
-} Jatek;
-
 typedef struct Peldany {
     float x;
     float y;
@@ -60,5 +55,12 @@ typedef struct {
     Peldany elem;
     Peldany *vege;
 } Palya;
+
+typedef struct Jatek {
+    Eger eger;
+    int billentyuzet[MAX_KEYBOARD_KEYS];
+    char beSzoveg[MAX_LINE_LENGTH];
+} Jatek;
+
 
 #endif //BME_SCHOOTER_KOZOS_H

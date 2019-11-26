@@ -31,10 +31,6 @@ void init(SDL_Renderer **renderer1, SDL_Window **window1) {
 
 }
 
-void rajz(Jatek* jatek, SDL_Renderer *renderer) {
-    blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
-}
-
 SDL_Texture* loadImage(SDL_Renderer *renderer, char path[]) {
     /* kep betoltese */
     SDL_Texture *kep = IMG_LoadTexture(renderer, path);
@@ -42,7 +38,7 @@ SDL_Texture* loadImage(SDL_Renderer *renderer, char path[]) {
         SDL_Log("Nem nyithato meg a kepfajl: %s", IMG_GetError());
         return NULL;
     }
-    else SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Kep betoltese %s ...", path);
+    //else SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Kep betoltese %s ...", path);
 
     return kep;
 }
@@ -81,7 +77,7 @@ void torles(SDL_Renderer *renderer, SDL_Window *window) {
     SDL_Quit();
 }
 
-void initPalya(SDL_Renderer *renderer, Peldany *jatekos, Palya *palya) {
+void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya) {
     celzo = loadImage(renderer, "gfx/targetter.png");
     initJatekos(jatekos, palya, renderer);
 }
@@ -103,19 +99,33 @@ void blitRotated(SDL_Texture *texture, int x, int y, float angle, SDL_Renderer *
     SDL_RenderCopyEx(renderer, texture, NULL, &dstRect, angle, NULL, SDL_FLIP_NONE);
 }
 
-void initJatekos(Peldany *jatekos, Palya *palya, SDL_Renderer *renderer)
+void initJatekos(Peldany **jatekos, Palya *palya, SDL_Renderer *renderer)
 {
-    jatekos = malloc(sizeof(Peldany));
-    memset(jatekos, 0, sizeof(Peldany));
-    palya->vege->kov = jatekos;
-    palya->vege = jatekos;
+    *jatekos = malloc(sizeof(Peldany));
+    memset(*jatekos, 0, sizeof(Peldany));
+    palya->vege->kov = *jatekos;
+    palya->vege = *jatekos;
 
-    jatekos->texture = loadImage(renderer, "gfx/donk.png");
-    jatekos->elet = 5;
-    jatekos->x = SCREEN_WIDTH / 2;
-    jatekos->y = SCREEN_HEIGHT / 2;
+    (*jatekos)->texture = loadImage(renderer, "gfx/donk.png");
+    (*jatekos)->elet = 5;
+    (*jatekos)->x = SCREEN_WIDTH / 2;
+    (*jatekos)->y = SCREEN_HEIGHT / 2;
 
-    SDL_QueryTexture(jatekos->texture, NULL, NULL, &jatekos->w, &jatekos->h);
+    SDL_QueryTexture((*jatekos)->texture, NULL, NULL, &(*jatekos)->w, &(*jatekos)->h);
+}
+
+static void drawEntities(Palya *palya, SDL_Renderer *renderer) {
+    Peldany *e;
+
+    for (e = palya->elem.kov ; e != NULL ; e = e->kov)
+    {
+        blitRotated(e->texture, e->x, e->y, e->szog, renderer);
+    }
+}
+
+void rajz(Jatek* jatek, Palya *palya, SDL_Renderer *renderer) {
+    blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
+    drawEntities(palya, renderer);
 }
 
 

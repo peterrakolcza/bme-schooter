@@ -26,6 +26,8 @@ static void capFrameRate(long *then, float *remainder)
 }
 
 int main(int argc, char *argv[]) {
+
+    printf("LEFUT!");
     SDL_Renderer *renderer;
     SDL_Window *window;
 
@@ -34,7 +36,7 @@ int main(int argc, char *argv[]) {
     Peldany *jatekos;
 
     init(&renderer, &window);
-    initPalya(renderer, jatekos, &palya);
+    initPalya(renderer, &jatekos, &palya);
 
     long most = SDL_GetTicks();
     float maradt = 0;
@@ -47,9 +49,9 @@ int main(int argc, char *argv[]) {
 
         doInput(&jatek);
 
-        jatekFrissites(&palya, jatekos, &jatek);
+        //jatekFrissites(&palya, jatekos, &jatek);
 
-        rajz(&jatek, renderer);
+        rajz(&jatek, &palya, renderer);
 
         kepernyo(renderer);
 

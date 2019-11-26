@@ -12,9 +12,6 @@
     <list default="true" id="e94dbfdf-e395-4d6a-98f9-e12b7ded4ef9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bemenet.c" beforeDir="false" afterPath="$PROJECT_DIR$/bemenet.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bemenet.h" beforeDir="false" afterPath="$PROJECT_DIR$/bemenet.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

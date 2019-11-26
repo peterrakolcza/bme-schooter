@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
     while (!kilep) {
         felkeszites(renderer);
 
+<<<<<<< HEAD
         //iranyitas(&jatek, &kilep);
         SDL_Event esemeny;
         SDL_WaitEvent(&esemeny);
@@ -74,6 +75,9 @@ int main(int argc, char *argv[]) {
 
         SDL_GetMouseState(&jatek.eger.x, &jatek.eger.y);
         //printf("%d %d", jatek->eger.x, jatek->eger.y);
+=======
+        doInput(&jatek);
+>>>>>>> parent of 0fad557... speed modified
 
         jatekFrissites(jatekos, &jatek);
 

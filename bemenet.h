@@ -7,7 +7,11 @@
 
 #include "kozos.h"
 
+<<<<<<< HEAD
 void elengedve(SDL_KeyboardEvent *esemeny, Jatek* jatek);
 void lenyomva(SDL_KeyboardEvent *esemeny, Jatek* jatek);
+=======
+void doInput(Jatek* jatek);
+>>>>>>> parent of 0fad557... speed modified
 
 #endif //BME_SCHOOTER_BEMENET_H

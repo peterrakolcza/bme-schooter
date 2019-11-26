@@ -113,13 +113,17 @@ void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya) {
     initJatekos(jatekos, renderer, palya);
 }
 
-void rajz(Jatek* jatek, Peldany *jatekos, SDL_Renderer *renderer) {
+void rajz(Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, SDL_Renderer *renderer) {
     blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
 
     Peldany *e;
-
     for (e = jatekos ; e != NULL ; e = e->kov) {
         blitRotated(e->texture, e->x, e->y, e->szog, renderer);
+    }
+
+    Lovedek *l;
+    for (l = lovedek ; l != NULL ; l = l->kov) {
+        blitRotated(l->texture, l->x, l->y, l->szog, renderer);
     }
 }
 

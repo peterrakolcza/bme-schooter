@@ -13,8 +13,7 @@ void calcSlope(int x1, int y1, int x2, int y2, float *dx, float *dy)
 {
     int steps = MAX(abs(x1 - x2), abs(y1 - y2));
 
-    if (steps == 0)
-    {
+    if (steps == 0) {
         *dx = *dy = 0;
         return;
     }
@@ -29,11 +28,13 @@ void calcSlope(int x1, int y1, int x2, int y2, float *dx, float *dy)
 
 
 
-static void loves(Peldany *jatekos, SDL_Texture *texture) {
+static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek) {
     Lovedek *l;
 
     l = malloc(sizeof(Lovedek));
     memset(l, 0, sizeof(Lovedek));
+    (*lovedek) = l;
+    l->kov = NULL;
 
     l->x = jatekos->x;
     l->y = jatekos->y;
@@ -68,7 +69,7 @@ void peldanyFrissites(Peldany *jatekos) {
     }
 }
 
-void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture) {
+void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture, Lovedek **lovedek) {
     jatekos->dx = 0; //reset
     jatekos->dy = 0;
 
@@ -91,7 +92,7 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture 
     jatekos->szog = szog(jatekos->x, jatekos->y, jatek->eger.x, jatek->eger.y);
 
     if (jatekos->ujratoltIdo == 0 && palya->tolteny[jatekos->fegyver] > 0 && jatek->eger.gomb[SDL_BUTTON_LEFT]) {
-        loves(jatekos, texture);
+        loves(jatekos, texture, lovedek);
 
         palya->tolteny[jatekos->fegyver]--;
     }
@@ -118,7 +119,7 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture 
 }
 
 
-void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture) {
-    jatekosFrissites(jatekos, jatek, palya, texture);
+void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture, Lovedek **lovedek) {
+    jatekosFrissites(jatekos, jatek, palya, texture, lovedek);
     peldanyFrissites(jatekos);
 }

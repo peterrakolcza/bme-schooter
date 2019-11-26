@@ -8,7 +8,7 @@
 #include "kozos.h"
 
 void init(SDL_Renderer **renderer1, SDL_Window **window1);
-void rajz(Jatek* jatek, Peldany *jatekos, SDL_Renderer *renderer);
+void rajz(Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, SDL_Renderer *renderer);
 SDL_Texture* loadImage(SDL_Renderer *renderer, char path[]);
 //void blit(SDL_Texture *texture, int x, int y, int center, SDL_Renderer *renderer);
 void felkeszites(SDL_Renderer *renderer);

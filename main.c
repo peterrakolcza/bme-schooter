@@ -36,13 +36,14 @@ int main(int argc, char *argv[]) {
     SDL_Window *window;
 
     Jatek jatek;
-    Palya *palya;
-    Peldany *jatekos;
-    Lovedek *lovedek;
-    SDL_Texture *lovedekTexture = loadImage(renderer, "gfx/donkBullet.png");
+    Palya palya;
+    Peldany *jatekos = NULL;
+    Lovedek *lovedek = NULL;
 
     init(&renderer, &window);
-    initPalya(renderer, &jatekos, palya);
+    initPalya(renderer, &jatekos, &palya);
+
+    SDL_Texture *lovedekTexture = loadImage(renderer, "gfx/bullet.png");
 
     /*Peldany *e;
     int db = 0;
@@ -99,9 +100,9 @@ int main(int argc, char *argv[]) {
         SDL_GetMouseState(&jatek.eger.x, &jatek.eger.y);
         //printf("%d %d", jatek->eger.x, jatek->eger.y);
 
-        jatekFrissites(jatekos, &jatek, palya, lovedekTexture);
+        jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, &lovedek);
 
-        rajz(&jatek, jatekos, renderer);
+        rajz(&jatek, jatekos, lovedek, renderer);
 
         kepernyo(renderer);
 

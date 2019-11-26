@@ -15,31 +15,6 @@ void lenyomva(SDL_KeyboardEvent *esemeny, Jatek* jatek) {
     }
 }
 
-void iranyitas(Jatek *jatek) {
-    SDL_Event esemeny;
 
-    while (SDL_PollEvent(&esemeny)) {
-        switch (esemeny.type)
-        {
-            case SDL_QUIT:
-                exit(0);
-                break;
-
-            case SDL_KEYDOWN:
-                lenyomva(&esemeny.key, jatek);
-                break;
-
-            case SDL_KEYUP:
-                elengedve(&esemeny.key, jatek);
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    SDL_GetMouseState(&jatek->eger.x, &jatek->eger.y);
-    //printf("%d %d", jatek->eger.x, jatek->eger.y);
-}
 
 

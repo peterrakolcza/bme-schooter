@@ -7,22 +7,11 @@
 #include "bemenet.h"
 #include "jatekmenet.h"
 
-static void capFrameRate(long *then, float *remainder)
-{
-    long wait = 16 + *remainder;
-    *remainder -= (int)*remainder;
-    long frameTime = SDL_GetTicks() - *then;
-
-    wait -= frameTime;
-
-    if (wait < 1) {
-        wait = 1;
-    }
-
-    SDL_Delay(wait);
-
-    *remainder += 0.667;
-    *then = SDL_GetTicks();
+Uint32 idozit(Uint32 ms, void *param) {
+    SDL_Event ev;
+    ev.type = SDL_USEREVENT;
+    SDL_PushEvent(&ev);
+    return ms;   /* ujabb varakozas */
 }
 
 int main(int argc, char *argv[]) {
@@ -44,24 +33,56 @@ int main(int argc, char *argv[]) {
     }
     printf("%d", db);*/
 
-    long most = SDL_GetTicks();
-    float maradt = 0;
+    //long most = SDL_GetTicks();
+    //float maradt = 0;
+
+    /* idozito hozzaadasa: 20 ms; 1000 ms / 20 ms -> 50 fps */
+    SDL_TimerID id = SDL_AddTimer(20, idozit, NULL);
 
     /* varunk a kilepesre */
-    while (true) {
+    bool kilep = false;
+    while (!kilep) {
         felkeszites(renderer);
 
-        iranyitas(&jatek);
+        //iranyitas(&jatek, &kilep);
+        SDL_Event esemeny;
+        SDL_WaitEvent(&esemeny);
+
+        switch (esemeny.type) {
+            /* felhasznaloi esemeny: ilyeneket general az idozito fuggveny */
+
+                case SDL_USEREVENT:
+                    break;
+
+                case SDL_QUIT:
+                    kilep = true;
+                    //exit(0);
+                    break;
+
+                case SDL_KEYDOWN:
+                    lenyomva(&esemeny.key, &jatek);
+                    break;
+
+                case SDL_KEYUP:
+                    elengedve(&esemeny.key, &jatek);
+                    break;
+
+                default:
+                    break;
+
+        }
+
+        SDL_GetMouseState(&jatek.eger.x, &jatek.eger.y);
+        //printf("%d %d", jatek->eger.x, jatek->eger.y);
 
         jatekFrissites(jatekos, &jatek);
 
         rajz(&jatek, jatekos, renderer);
 
         kepernyo(renderer);
-
-        capFrameRate(&most, &maradt);
     }
-
+    /* idozito torlese */
+    SDL_RemoveTimer(id);
     /* ablak bezarasa */
     torles(renderer, window);
 

@@ -7,6 +7,7 @@
 
 #include "kozos.h"
 
-void iranyitas(Jatek* jatek);
+void elengedve(SDL_KeyboardEvent *esemeny, Jatek* jatek);
+void lenyomva(SDL_KeyboardEvent *esemeny, Jatek* jatek);
 
 #endif //BME_SCHOOTER_BEMENET_H

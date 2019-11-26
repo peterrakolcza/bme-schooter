@@ -70,6 +70,7 @@ void kepernyo(SDL_Renderer *renderer) {
 }
 
 void torles(SDL_Renderer *renderer, SDL_Window *window) {
+    printf("TORLESSSSSS");
     SDL_DestroyRenderer(renderer);
 
     SDL_DestroyWindow(window);
@@ -77,14 +78,9 @@ void torles(SDL_Renderer *renderer, SDL_Window *window) {
     SDL_Quit();
 }
 
-void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya) {
+void initPalya(SDL_Renderer *renderer, Peldany **jatekos) {
     celzo = loadImage(renderer, "gfx/targetter.png");
-    initJatekos(jatekos, palya, renderer);
-}
-
-float szog(int x1, int y1, int x2, int y2) {
-    float angle = -90 + atan2(y1 - y2, x1 - x2) * (180 / PI);
-    return angle >= 0 ? angle : 360 + angle;
+    initJatekos(jatekos, renderer);
 }
 
 void blitRotated(SDL_Texture *texture, int x, int y, float angle, SDL_Renderer *renderer) {
@@ -99,12 +95,11 @@ void blitRotated(SDL_Texture *texture, int x, int y, float angle, SDL_Renderer *
     SDL_RenderCopyEx(renderer, texture, NULL, &dstRect, angle, NULL, SDL_FLIP_NONE);
 }
 
-void initJatekos(Peldany **jatekos, Palya *palya, SDL_Renderer *renderer)
+void initJatekos(Peldany **jatekos, SDL_Renderer *renderer)
 {
     *jatekos = malloc(sizeof(Peldany));
     memset(*jatekos, 0, sizeof(Peldany));
-    palya->vege->kov = *jatekos;
-    palya->vege = *jatekos;
+    (*jatekos)->kov = NULL;
 
     (*jatekos)->texture = loadImage(renderer, "gfx/donk.png");
     (*jatekos)->elet = 5;
@@ -114,18 +109,17 @@ void initJatekos(Peldany **jatekos, Palya *palya, SDL_Renderer *renderer)
     SDL_QueryTexture((*jatekos)->texture, NULL, NULL, &(*jatekos)->w, &(*jatekos)->h);
 }
 
-static void drawEntities(Palya *palya, SDL_Renderer *renderer) {
+void drawEntities(Peldany *jatekos, SDL_Renderer *renderer) {
     Peldany *e;
 
-    for (e = palya->elem.kov ; e != NULL ; e = e->kov)
-    {
+    for (e = jatekos ; e != NULL ; e = e->kov) {
         blitRotated(e->texture, e->x, e->y, e->szog, renderer);
     }
 }
 
-void rajz(Jatek* jatek, Palya *palya, SDL_Renderer *renderer) {
+void rajz(Jatek* jatek, Peldany *jatekos, SDL_Renderer *renderer) {
     blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
-    drawEntities(palya, renderer);
+    drawEntities(jatekos, renderer);
 }
 
 

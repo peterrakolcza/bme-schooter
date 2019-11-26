@@ -16,6 +16,7 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720

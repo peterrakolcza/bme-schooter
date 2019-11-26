@@ -12,12 +12,24 @@
     <list default="true" id="e94dbfdf-e395-4d6a-98f9-e12b7ded4ef9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" afterPath="$PROJECT_DIR$/a.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bemenet.c" beforeDir="false" afterPath="$PROJECT_DIR$/bemenet.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/init.c" beforeDir="false" afterPath="$PROJECT_DIR$/init.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/init.h" beforeDir="false" afterPath="$PROJECT_DIR$/init.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jatekmenet.c" beforeDir="false" afterPath="$PROJECT_DIR$/jatekmenet.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jatekmenet.h" beforeDir="false" afterPath="$PROJECT_DIR$/jatekmenet.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kozos.h" beforeDir="false" afterPath="$PROJECT_DIR$/kozos.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/music/fight_looped.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/10 Guage Shotgun-SoundBible.com-74120584.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/163441__under7dude__man-getting-hit.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/219883__pablocandel__boy-scream.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/260434__roganderrick__glass-break-medium-jar.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/342749__rhodesmas__notification-01.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/344809__limitsnap-creations__laserblast-effect.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/418194__vull__hard-glass-impact.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/67020__ls__submachinegun2.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/97792__cgeffex__metal-impact.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/Gun_44magnum-freesoundeffects.ogg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sound/Shotgun-SoundBible.com-862990674.ogg" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -60,7 +72,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1574721039110</updated>
-      <workItem from="1574721040244" duration="10996000" />
+      <workItem from="1574721040244" duration="17618000" />
     </task>
     <servers />
   </component>

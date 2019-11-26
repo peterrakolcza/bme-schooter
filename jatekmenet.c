@@ -4,15 +4,20 @@
 
 #include "jatekmenet.h"
 
-void jatekFrissites(Palya *palya, Peldany *jatekos, Jatek *jatek) {
-    jatekosFrissites(jatekos, jatek);
-    peldanyFrissites(palya, jatekos);
+float szog(int x1, int y1, int x2, int y2) {
+    float angle = -90 + atan2(y1 - y2, x1 - x2) * (180 / PI);
+    return angle >= 0 ? angle : 360 + angle;
 }
 
-void peldanyFrissites(Palya *palya, Peldany *jatekos) {
+void jatekFrissites(Peldany *jatekos, Jatek *jatek) {
+    jatekosFrissites(jatekos, jatek);
+    peldanyFrissites(jatekos);
+}
+
+void peldanyFrissites(Peldany *jatekos) {
     Peldany *p;
 
-    for (p = palya->elem.kov ; p != NULL ; p = p->kov)
+    for (p = jatekos ; p != NULL ; p = p->kov)
     {
         p->x += p->dx;
         p->y += p->dy;

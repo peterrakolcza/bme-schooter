@@ -20,8 +20,6 @@
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
-#define MAX_KEYBOARD_KEYS 400
-#define MAX_LINE_LENGTH 1000
 #define PI 3.141592653589793238
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
@@ -30,6 +28,7 @@
 typedef struct Eger {
     int x;
     int y;
+    int gomb[6];
     int gorgo;
 } Eger;
 
@@ -46,21 +45,36 @@ typedef struct Peldany {
     int h;
     float dx;
     float dy;
+    int ujratoltIdo;
     int elet;
     int szog;
+    int fegyver[2];
     SDL_Texture *texture;
     struct Peldany *kov;
 } Peldany;
 
+typedef struct Lovedek {
+    float x;
+    float y;
+    int w;
+    int h;
+    float dx;
+    float dy;
+    int elet;
+    int szog;
+    int fegyver[2];
+    SDL_Texture *texture;
+    struct Lovedek *kov;
+} Lovedek;
+
 typedef struct {
-    Peldany elem;
-    Peldany *vege;
+    int tolteny[2];
 } Palya;
 
 typedef struct Jatek {
     Eger eger;
-    int billentyuzet[MAX_KEYBOARD_KEYS];
-    char beSzoveg[MAX_LINE_LENGTH];
+    int billentyuzet[400];
+    char beSzoveg[1000];
 } Jatek;
 
 

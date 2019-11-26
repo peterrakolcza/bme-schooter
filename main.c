@@ -2,6 +2,12 @@
 // Created by Rakolcza Peter on 2019. 11. 16..
 //
 
+
+/*TODO: kell-e dupla indirekció jatekosnal?
+ *
+ *
+ * */
+
 #include "kozos.h"
 #include "init.h"
 #include "bemenet.h"
@@ -69,6 +75,18 @@ int main(int argc, char *argv[]) {
 
                 case SDL_KEYUP:
                     elengedve(&esemeny.key, &jatek);
+                    break;
+
+                case SDL_MOUSEBUTTONDOWN:
+                    gombLe(&esemeny.button, &jatek);
+                    break;
+
+                case SDL_MOUSEBUTTONUP:
+                    gombFel(&esemeny.button, &jatek);
+                    break;
+
+                case SDL_MOUSEWHEEL:
+                    jatek.eger.gorgo = esemeny.wheel.y;
                     break;
 
                 default:

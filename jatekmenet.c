@@ -30,29 +30,55 @@ void peldanyFrissites(Peldany *jatekos) {
     }
 }
 
-void jatekosFrissites(Peldany *jatekos, Jatek *jatek) {
-    jatekos->dx *= 0.7;
-    jatekos->dy *= 0.7;
+void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya) {
+    jatekos->dx = 0; //reset
+    jatekos->dy = 0;
 
-    if (jatek->billentyuzet[SDL_SCANCODE_W])
-    {
+    if (jatek->billentyuzet[SDL_SCANCODE_W]) {
         jatekos->dy = -5;
     }
 
-    if (jatek->billentyuzet[SDL_SCANCODE_S])
-    {
+    if (jatek->billentyuzet[SDL_SCANCODE_S]) {
         jatekos->dy = 5;
     }
 
-    if (jatek->billentyuzet[SDL_SCANCODE_A])
-    {
+    if (jatek->billentyuzet[SDL_SCANCODE_A]) {
         jatekos->dx = -5;
     }
 
-    if (jatek->billentyuzet[SDL_SCANCODE_D])
-    {
+    if (jatek->billentyuzet[SDL_SCANCODE_D]) {
         jatekos->dx = 5;
     }
 
     jatekos->szog = szog(jatekos->x, jatekos->y, jatek->eger.x, jatek->eger.y);
+
+    if (jatekos->ujratoltIdo == 0 && palya->tolteny[jatekos->fegyver] > 0 && jatek->eger.gomb[SDL_BUTTON_LEFT]) {
+        loves();
+
+        palya->tolteny[jatekos->fegyver]--;
+    }
+
+    if (jatek->eger.gorgo < 0) {
+        if (--jatekos->fegyver < WPN_PISTOL) {
+            jatekos->fegyver = WPN_MAX - 1;
+        }
+
+        jatek->eger.gorgo = 0;
+    }
+
+    if (jatek->eger.gorgo > 0) {
+        if (++jatekos->fegyver >= WPN_MAX) {
+            jatekos->fegyver = WPN_PISTOL;
+        }
+
+        jatek->eger.gorgo = 0;
+    }
+
+    if (jatek->eger.gomb[SDL_BUTTON_RIGHT]) {
+        if (jatekos->fegyver == WPN_PISTOL && palya->tolteny[WPN_PISTOL] == 0) {
+            palya->tolteny[WPN_PISTOL] = 12;
+        }
+
+        jatek->eger.gomb[SDL_BUTTON_RIGHT] = 0;
+    }
 }

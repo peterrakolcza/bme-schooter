@@ -51,8 +51,7 @@ void blit(SDL_Texture *texture, int x, int y, int center, SDL_Renderer *renderer
     dest.y = y;
     SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
 
-    if (center)
-    {
+    if (center) {
         dest.x -= dest.w / 2;
         dest.y -= dest.h / 2;
     }
@@ -109,17 +108,14 @@ void initJatekos(Peldany **jatekos, SDL_Renderer *renderer)
     SDL_QueryTexture((*jatekos)->texture, NULL, NULL, &(*jatekos)->w, &(*jatekos)->h);
 }
 
-void drawEntities(Peldany *jatekos, SDL_Renderer *renderer) {
+void rajz(Jatek* jatek, Peldany *jatekos, SDL_Renderer *renderer) {
+    blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
+
     Peldany *e;
 
     for (e = jatekos ; e != NULL ; e = e->kov) {
         blitRotated(e->texture, e->x, e->y, e->szog, renderer);
     }
-}
-
-void rajz(Jatek* jatek, Peldany *jatekos, SDL_Renderer *renderer) {
-    blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
-    drawEntities(jatekos, renderer);
 }
 
 

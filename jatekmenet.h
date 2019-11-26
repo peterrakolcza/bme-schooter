@@ -9,6 +9,6 @@
 
 void jatekFrissites(Peldany *jatekos, Jatek *jatek);
 void peldanyFrissites(Peldany *jatekos);
-void jatekosFrissites(Peldany *jatekos, Jatek *jatek);
+void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya);
 
 #endif //BME_SCHOOTER_JATEKMENET_H

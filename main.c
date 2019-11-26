@@ -38,9 +38,11 @@ int main(int argc, char *argv[]) {
     Jatek jatek;
     Palya *palya;
     Peldany *jatekos;
+    Lovedek *lovedek;
+    SDL_Texture *lovedekTexture = loadImage(renderer, "gfx/donkBullet.png");
 
     init(&renderer, &window);
-    initPalya(renderer, &jatekos);
+    initPalya(renderer, &jatekos, palya);
 
     /*Peldany *e;
     int db = 0;
@@ -97,7 +99,7 @@ int main(int argc, char *argv[]) {
         SDL_GetMouseState(&jatek.eger.x, &jatek.eger.y);
         //printf("%d %d", jatek->eger.x, jatek->eger.y);
 
-        jatekFrissites(jatekos, &jatek);
+        jatekFrissites(jatekos, &jatek, palya, lovedekTexture);
 
         rajz(&jatek, jatekos, renderer);
 

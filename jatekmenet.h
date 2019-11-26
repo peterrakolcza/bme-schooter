@@ -7,8 +7,6 @@
 
 #include "kozos.h"
 
-void jatekFrissites(Peldany *jatekos, Jatek *jatek);
-void peldanyFrissites(Peldany *jatekos);
-void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya);
+void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture);
 
 #endif //BME_SCHOOTER_JATEKMENET_H

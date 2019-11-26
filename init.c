@@ -77,11 +77,6 @@ void torles(SDL_Renderer *renderer, SDL_Window *window) {
     SDL_Quit();
 }
 
-void initPalya(SDL_Renderer *renderer, Peldany **jatekos) {
-    celzo = loadImage(renderer, "gfx/targetter.png");
-    initJatekos(jatekos, renderer);
-}
-
 void blitRotated(SDL_Texture *texture, int x, int y, float angle, SDL_Renderer *renderer) {
     SDL_Rect dstRect;
 
@@ -94,7 +89,7 @@ void blitRotated(SDL_Texture *texture, int x, int y, float angle, SDL_Renderer *
     SDL_RenderCopyEx(renderer, texture, NULL, &dstRect, angle, NULL, SDL_FLIP_NONE);
 }
 
-void initJatekos(Peldany **jatekos, SDL_Renderer *renderer)
+void initJatekos(Peldany **jatekos, SDL_Renderer *renderer, Palya *palya)
 {
     *jatekos = malloc(sizeof(Peldany));
     memset(*jatekos, 0, sizeof(Peldany));
@@ -102,10 +97,20 @@ void initJatekos(Peldany **jatekos, SDL_Renderer *renderer)
 
     (*jatekos)->texture = loadImage(renderer, "gfx/donk.png");
     (*jatekos)->elet = 5;
+
+    palya->tolteny[Pisztoly] = 12;
+    palya->tolteny[GepFegyver] = 100;
+
+
     (*jatekos)->x = SCREEN_WIDTH / 2;
     (*jatekos)->y = SCREEN_HEIGHT / 2;
 
     SDL_QueryTexture((*jatekos)->texture, NULL, NULL, &(*jatekos)->w, &(*jatekos)->h);
+}
+
+void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya) {
+    celzo = loadImage(renderer, "gfx/targetter.png");
+    initJatekos(jatekos, renderer, palya);
 }
 
 void rajz(Jatek* jatek, Peldany *jatekos, SDL_Renderer *renderer) {

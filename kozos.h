@@ -25,6 +25,8 @@
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
+typedef enum Fegyver {GepFegyver = 1, Pisztoly = 0} Fegyver;
+
 typedef struct Eger {
     int x;
     int y;
@@ -48,7 +50,7 @@ typedef struct Peldany {
     int ujratoltIdo;
     int elet;
     int szog;
-    int fegyver[2];
+    Fegyver fegyver;
     SDL_Texture *texture;
     struct Peldany *kov;
 } Peldany;
@@ -62,7 +64,6 @@ typedef struct Lovedek {
     float dy;
     int elet;
     int szog;
-    int fegyver[2];
     SDL_Texture *texture;
     struct Lovedek *kov;
 } Lovedek;

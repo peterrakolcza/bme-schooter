@@ -9,10 +9,48 @@ float szog(int x1, int y1, int x2, int y2) {
     return angle >= 0 ? angle : 360 + angle;
 }
 
-void jatekFrissites(Peldany *jatekos, Jatek *jatek) {
-    jatekosFrissites(jatekos, jatek);
-    peldanyFrissites(jatekos);
+void calcSlope(int x1, int y1, int x2, int y2, float *dx, float *dy)
+{
+    int steps = MAX(abs(x1 - x2), abs(y1 - y2));
+
+    if (steps == 0)
+    {
+        *dx = *dy = 0;
+        return;
+    }
+
+    *dx = (x1 - x2);
+    *dx /= steps;
+
+    *dy = (y1 - y2);
+    *dy /= steps;
 }
+
+
+
+
+static void loves(Peldany *jatekos, SDL_Texture *texture) {
+    Lovedek *l;
+
+    l = malloc(sizeof(Lovedek));
+    memset(l, 0, sizeof(Lovedek));
+
+    l->x = jatekos->x;
+    l->y = jatekos->y;
+    l->texture = texture;
+    l->elet = 60 * 2;
+    l->szog = jatekos->szog;
+
+    //calcSlope(app.mouse.x, app.mouse.y, l->x, l->y, &l->dx, &l->dy);
+
+    l->dx *= 16;
+    l->dy *= 16;
+
+    if (jatekos->fegyver == GepFegyver)
+        jatekos->ujratoltIdo = 4;
+    else jatekos->ujratoltIdo = 16;
+}
+
 
 void peldanyFrissites(Peldany *jatekos) {
     Peldany *p;
@@ -30,7 +68,7 @@ void peldanyFrissites(Peldany *jatekos) {
     }
 }
 
-void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya) {
+void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture) {
     jatekos->dx = 0; //reset
     jatekos->dy = 0;
 
@@ -53,32 +91,34 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya) {
     jatekos->szog = szog(jatekos->x, jatekos->y, jatek->eger.x, jatek->eger.y);
 
     if (jatekos->ujratoltIdo == 0 && palya->tolteny[jatekos->fegyver] > 0 && jatek->eger.gomb[SDL_BUTTON_LEFT]) {
-        loves();
+        loves(jatekos, texture);
 
         palya->tolteny[jatekos->fegyver]--;
     }
 
     if (jatek->eger.gorgo < 0) {
-        if (--jatekos->fegyver < WPN_PISTOL) {
-            jatekos->fegyver = WPN_MAX - 1;
-        }
+        jatekos->fegyver = Pisztoly;
 
         jatek->eger.gorgo = 0;
     }
 
     if (jatek->eger.gorgo > 0) {
-        if (++jatekos->fegyver >= WPN_MAX) {
-            jatekos->fegyver = WPN_PISTOL;
-        }
+        jatekos->fegyver = GepFegyver;
 
         jatek->eger.gorgo = 0;
     }
 
     if (jatek->eger.gomb[SDL_BUTTON_RIGHT]) {
-        if (jatekos->fegyver == WPN_PISTOL && palya->tolteny[WPN_PISTOL] == 0) {
-            palya->tolteny[WPN_PISTOL] = 12;
+        if (jatekos->fegyver == Pisztoly && palya->tolteny[Pisztoly] == 0) {
+            palya->tolteny[Pisztoly] = 12;
         }
 
         jatek->eger.gomb[SDL_BUTTON_RIGHT] = 0;
     }
+}
+
+
+void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture) {
+    jatekosFrissites(jatekos, jatek, palya, texture);
+    peldanyFrissites(jatekos);
 }

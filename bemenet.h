@@ -7,6 +7,6 @@
 
 #include "kozos.h"
 
-void doInput(Jatek* jatek);
+void iranyitas(Jatek* jatek);
 
 #endif //BME_SCHOOTER_BEMENET_H

@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     while (true) {
         felkeszites(renderer);
 
-        doInput(&jatek);
+        iranyitas(&jatek);
 
         jatekFrissites(jatekos, &jatek);
 

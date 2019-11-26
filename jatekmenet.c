@@ -31,27 +31,27 @@ void peldanyFrissites(Peldany *jatekos) {
 }
 
 void jatekosFrissites(Peldany *jatekos, Jatek *jatek) {
-    jatekos->dx *= 0.85;
-    jatekos->dy *= 0.85;
+    jatekos->dx *= 0.7;
+    jatekos->dy *= 0.7;
 
     if (jatek->billentyuzet[SDL_SCANCODE_W])
     {
-        jatekos->dy = -6;
+        jatekos->dy = -5;
     }
 
     if (jatek->billentyuzet[SDL_SCANCODE_S])
     {
-        jatekos->dy = 6;
+        jatekos->dy = 5;
     }
 
     if (jatek->billentyuzet[SDL_SCANCODE_A])
     {
-        jatekos->dx = -6;
+        jatekos->dx = -5;
     }
 
     if (jatek->billentyuzet[SDL_SCANCODE_D])
     {
-        jatekos->dx = 6;
+        jatekos->dx = 5;
     }
 
     jatekos->szog = szog(jatekos->x, jatekos->y, jatek->eger.x, jatek->eger.y);

@@ -81,8 +81,41 @@ void torles(SDL_Renderer *renderer, SDL_Window *window) {
     SDL_Quit();
 }
 
-void initPalya(SDL_Renderer *renderer) {
+void initPalya(SDL_Renderer *renderer, Peldany *jatekos, Palya *palya) {
     celzo = loadImage(renderer, "gfx/targetter.png");
+    initJatekos(jatekos, palya, renderer);
+}
+
+float szog(int x1, int y1, int x2, int y2) {
+    float angle = -90 + atan2(y1 - y2, x1 - x2) * (180 / PI);
+    return angle >= 0 ? angle : 360 + angle;
+}
+
+void blitRotated(SDL_Texture *texture, int x, int y, float angle, SDL_Renderer *renderer) {
+    SDL_Rect dstRect;
+
+    dstRect.x = x;
+    dstRect.y = y;
+    SDL_QueryTexture(texture, NULL, NULL, &dstRect.w, &dstRect.h);
+    dstRect.x -= (dstRect.w / 2);
+    dstRect.y -= (dstRect.h / 2);
+
+    SDL_RenderCopyEx(renderer, texture, NULL, &dstRect, angle, NULL, SDL_FLIP_NONE);
+}
+
+void initJatekos(Peldany *jatekos, Palya *palya, SDL_Renderer *renderer)
+{
+    jatekos = malloc(sizeof(Peldany));
+    memset(jatekos, 0, sizeof(Peldany));
+    palya->vege->kov = jatekos;
+    palya->vege = jatekos;
+
+    jatekos->texture = loadImage(renderer, "gfx/donk.png");
+    jatekos->elet = 5;
+    jatekos->x = SCREEN_WIDTH / 2;
+    jatekos->y = SCREEN_HEIGHT / 2;
+
+    SDL_QueryTexture(jatekos->texture, NULL, NULL, &jatekos->w, &jatekos->h);
 }
 
 

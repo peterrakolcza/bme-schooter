@@ -5,6 +5,7 @@
 #include "kozos.h"
 #include "init.h"
 #include "bemenet.h"
+#include "jatekmenet.h"
 
 static void capFrameRate(long *then, float *remainder)
 {
@@ -28,10 +29,12 @@ int main(int argc, char *argv[]) {
     SDL_Renderer *renderer;
     SDL_Window *window;
 
-    init(&renderer, &window);
-    initPalya(renderer);
-
     Jatek jatek;
+    Palya palya;
+    Peldany *jatekos;
+
+    init(&renderer, &window);
+    initPalya(renderer, jatekos, &palya);
 
     long most = SDL_GetTicks();
     float maradt = 0;
@@ -43,6 +46,8 @@ int main(int argc, char *argv[]) {
         felkeszites(renderer);
 
         doInput(&jatek);
+
+        jatekFrissites(&palya, jatekos, &jatek);
 
         rajz(&jatek, renderer);
 

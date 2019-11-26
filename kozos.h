@@ -19,6 +19,10 @@
 #define SCREEN_HEIGHT 720
 #define MAX_KEYBOARD_KEYS 400
 #define MAX_LINE_LENGTH 1000
+#define PI 3.141592653589793238
+
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
 
 typedef struct Eger {
     int x;
@@ -49,7 +53,12 @@ typedef struct Peldany {
     int elet;
     int szog;
     SDL_Texture *texture;
-    struct Entity *kov;
+    struct Peldany *kov;
 } Peldany;
+
+typedef struct {
+    Peldany elem;
+    Peldany *vege;
+} Palya;
 
 #endif //BME_SCHOOTER_KOZOS_H

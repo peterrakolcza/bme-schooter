@@ -14,6 +14,9 @@ void blit(SDL_Texture *texture, int x, int y, int center, SDL_Renderer *renderer
 void felkeszites(SDL_Renderer *renderer);
 void kepernyo(SDL_Renderer *renderer);
 void torles(SDL_Renderer *renderer, SDL_Window *window);
-void initPalya(SDL_Renderer *renderer);
+void initPalya(SDL_Renderer *renderer, Peldany *jatekos, Palya *palya);
+float szog(int x1, int y1, int x2, int y2);
+void blitRotated(SDL_Texture *texture, int x, int y, float angle, SDL_Renderer *renderer);
+void initJatekos(Peldany *jatekos, Palya *palya, SDL_Renderer *renderer);
 
 #endif //BME_SCHOOTER_INIT_H

@@ -3,37 +3,34 @@
 //
 #include "bemenet.h"
 
-void doKeyUp(SDL_KeyboardEvent *event, Jatek* jatek) {
-    if (event->repeat == 0 && event->keysym.scancode < MAX_KEYBOARD_KEYS) {
-        jatek->billentyuzet[event->keysym.scancode] = 0;
+void elengedve(SDL_KeyboardEvent *esemeny, Jatek* jatek) {
+    if (esemeny->repeat == 0 && esemeny->keysym.scancode < MAX_KEYBOARD_KEYS) {
+        jatek->billentyuzet[esemeny->keysym.scancode] = 0;
     }
 }
 
-void doKeyDown(SDL_KeyboardEvent *event, Jatek* jatek) {
-    if (event->repeat == 0 && event->keysym.scancode < MAX_KEYBOARD_KEYS) {
-        jatek->billentyuzet[event->keysym.scancode] = 1;
+void lenyomva(SDL_KeyboardEvent *esemeny, Jatek* jatek) {
+    if (esemeny->repeat == 0 && esemeny->keysym.scancode < MAX_KEYBOARD_KEYS) {
+        jatek->billentyuzet[esemeny->keysym.scancode] = 1;
     }
 }
 
-<<<<<<< HEAD
+void iranyitas(Jatek *jatek) {
+    SDL_Event esemeny;
 
-=======
-void doInput(Jatek *jatek) {
-    SDL_Event event;
-
-    while (SDL_PollEvent(&event)) {
-        switch (event.type)
+    while (SDL_PollEvent(&esemeny)) {
+        switch (esemeny.type)
         {
             case SDL_QUIT:
                 exit(0);
                 break;
 
             case SDL_KEYDOWN:
-                doKeyDown(&event.key, jatek);
+                lenyomva(&esemeny.key, jatek);
                 break;
 
             case SDL_KEYUP:
-                doKeyUp(&event.key, jatek);
+                elengedve(&esemeny.key, jatek);
                 break;
 
             default:
@@ -44,6 +41,5 @@ void doInput(Jatek *jatek) {
     SDL_GetMouseState(&jatek->eger.x, &jatek->eger.y);
     //printf("%d %d", jatek->eger.x, jatek->eger.y);
 }
->>>>>>> parent of 0fad557... speed modified
 
 

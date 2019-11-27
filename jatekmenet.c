@@ -38,7 +38,7 @@ static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek, Jat
         (*lovedek) = l;
     }
     else {
-        Lovedek *mozgo;
+        Lovedek *mozgo = *lovedek;
         while (mozgo->kov != NULL) mozgo = mozgo->kov;
         mozgo->kov = l;
     }
@@ -138,27 +138,11 @@ void lovedekFrissites(Lovedek **lovedek) {
         l->y += l->dy;
 
         if (--l->elet <= 0) {
-            if (elozo == NULL) {
-                Lovedek *temp = l;
-                free(temp);
-                *lovedek = NULL;
-                l = NULL;
-            }
-            else if (l->kov == NULL) {
-                Lovedek *temp = l;
-                free(temp);
-                l = NULL;
-            }
-            /*else {
-                elozo->kov = l->kov;
-                free(l);
-                l = elozo->kov;
-            }*/
+
         }
 
         elozo = l;
-        if (l != NULL)
-            l = l->kov;
+        l = l->kov;
     }
 }
 

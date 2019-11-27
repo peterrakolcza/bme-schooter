@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
 
         capFrameRate(&most, &maradt);
 
-        printf("%d ", jatekos->fegyver);
+        //printf("%d ", jatekos->fegyver);
         //printf("%d ", jatekos->ujratoltIdo);
     }
 

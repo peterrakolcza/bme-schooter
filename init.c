@@ -136,4 +136,13 @@ void rajz(Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, SDL_Renderer *render
     }
 }
 
+void felszabaditas(Peldany *jatekos) {
+    Peldany *e = jatekos;
+    while (e != NULL) {
+        Peldany *temp = e->kov;
+        free(e);
+        e = temp;
+    }
+}
+
 

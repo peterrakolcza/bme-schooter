@@ -66,6 +66,7 @@ int main(int argc, char *argv[]) {
         while (SDL_PollEvent(&esemeny)) {
             switch (esemeny.type) {
                 case SDL_QUIT:
+                    felszabaditas(jatekos);
                     /* ablak bezarasa */
                     torles(renderer, window);
                     exit(0);

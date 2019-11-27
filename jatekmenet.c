@@ -139,14 +139,15 @@ void lovedekFrissites(Lovedek **lovedek) {
 
         if (--l->elet <= 0) {
             if (elozo == NULL) {
-                free(l);
+                Lovedek *temp = l;
+                free(temp);
                 *lovedek = NULL;
-                break;
+                l = NULL;
             }
             else if (l->kov == NULL) {
-                elozo->kov = NULL;
-                free(l);
-                break;
+                Lovedek *temp = l;
+                free(temp);
+                l = NULL;
             }
             /*else {
                 elozo->kov = l->kov;
@@ -156,7 +157,8 @@ void lovedekFrissites(Lovedek **lovedek) {
         }
 
         elozo = l;
-        l = l->kov;
+        if (l != NULL)
+            l = l->kov;
     }
 }
 

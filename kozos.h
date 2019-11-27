@@ -9,7 +9,7 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <SDL2/SDL_image.h>
 
-//#include "debugmalloc.h"
+#include "debugmalloc.h"
 
 #include <stdlib.h>
 #include <stdio.h>

@@ -108,9 +108,18 @@ void initJatekos(Peldany **jatekos, SDL_Renderer *renderer, Palya *palya)
     SDL_QueryTexture((*jatekos)->texture, NULL, NULL, &(*jatekos)->w, &(*jatekos)->h);
 }
 
-void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya) {
+void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya, Jatek *jatek) {
     celzo = loadImage(renderer, "gfx/targetter.png");
     initJatekos(jatekos, renderer, palya);
+
+    for (int i = 0; i < 6; ++i) {
+        jatek->eger.gomb[i] = 0;
+    }
+    jatek->eger.gorgo = 0;
+
+    for (int i = 0; i < 400; ++i) {
+        jatek->billentyuzet[i] = 0;
+    }
 }
 
 void rajz(Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, SDL_Renderer *renderer) {

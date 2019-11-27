@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
     Lovedek *lovedek = NULL;
 
     init(&renderer, &window);
-    initPalya(renderer, &jatekos, &palya);
+    initPalya(renderer, &jatekos, &palya, &jatek);
 
     SDL_Texture *lovedekTexture = loadImage(renderer, "gfx/bullet.png");
 
@@ -64,8 +64,7 @@ int main(int argc, char *argv[]) {
         SDL_Event esemeny;
 
         while (SDL_PollEvent(&esemeny)) {
-            switch (esemeny.type)
-            {
+            switch (esemeny.type) {
                 case SDL_QUIT:
                     /* ablak bezarasa */
                     torles(renderer, window);
@@ -107,6 +106,9 @@ int main(int argc, char *argv[]) {
         kepernyo(renderer);
 
         capFrameRate(&most, &maradt);
+
+        printf("%d ", jatekos->fegyver);
+        //printf("%d ", jatekos->ujratoltIdo);
     }
 
     return 0;

@@ -34,12 +34,6 @@ typedef struct Eger {
     int gorgo;
 } Eger;
 
-typedef struct Texture {
-    char name[300];
-    SDL_Texture *texture;
-    struct Texture *next;
-} Texture;
-
 typedef struct Peldany {
     float x;
     float y;

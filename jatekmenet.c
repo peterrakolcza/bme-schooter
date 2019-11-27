@@ -28,12 +28,20 @@ void calcSlope(int x1, int y1, int x2, int y2, float *dx, float *dy)
 
 
 
-static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek) {
+static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek, Jatek *jatek) {
     Lovedek *l;
 
     l = malloc(sizeof(Lovedek));
     memset(l, 0, sizeof(Lovedek));
-    (*lovedek) = l;
+
+    if(*lovedek == NULL) {
+        (*lovedek) = l;
+    }
+    else {
+        Lovedek *mozgo;
+        while (mozgo->kov != NULL) mozgo = mozgo->kov;
+        mozgo->kov = l;
+    }
     l->kov = NULL;
 
     l->x = jatekos->x;
@@ -42,7 +50,7 @@ static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek) {
     l->elet = 60 * 2;
     l->szog = jatekos->szog;
 
-    //calcSlope(app.mouse.x, app.mouse.y, l->x, l->y, &l->dx, &l->dy);
+    calcSlope(jatek->eger.x, jatek->eger.y, l->x, l->y, &l->dx, &l->dy);
 
     l->dx *= 16;
     l->dy *= 16;
@@ -56,13 +64,13 @@ static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek) {
 void peldanyFrissites(Peldany *jatekos) {
     Peldany *p;
 
-    for (p = jatekos ; p != NULL ; p = p->kov)
-    {
+    for (p = jatekos ; p != NULL ; p = p->kov) {
         p->x += p->dx;
         p->y += p->dy;
 
-        if (p == jatekos)
-        {
+        p->ujratoltIdo = MAX(p->ujratoltIdo - 1, 0);
+
+        if (p == jatekos) {
             p->x = MIN(MAX(p->x, p->w / 2), SCREEN_WIDTH - p->w / 2);
             p->y = MIN(MAX(p->y, p->h / 2), SCREEN_HEIGHT - p->h / 2);
         }
@@ -92,7 +100,10 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture 
     jatekos->szog = szog(jatekos->x, jatekos->y, jatek->eger.x, jatek->eger.y);
 
     if (jatekos->ujratoltIdo == 0 && palya->tolteny[jatekos->fegyver] > 0 && jatek->eger.gomb[SDL_BUTTON_LEFT]) {
-        loves(jatekos, texture, lovedek);
+        loves(jatekos, texture, lovedek, jatek);
+        /*for (int i = 0; i < 6; ++i) {
+            printf("%d ", jatek->eger.gomb[i]);
+        }*/
 
         palya->tolteny[jatekos->fegyver]--;
     }
@@ -118,8 +129,40 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture 
     }
 }
 
+void lovedekFrissites(Lovedek **lovedek) {
+    Lovedek *l = *lovedek;
+    Lovedek *elozo = NULL;
+
+    while (l != NULL) {
+        l->x += l->dx;
+        l->y += l->dy;
+
+        if (--l->elet <= 0) {
+            if (elozo == NULL) {
+                free(l);
+                *lovedek = NULL;
+                break;
+            }
+            else if (l->kov == NULL) {
+                elozo->kov = NULL;
+                free(l);
+                break;
+            }
+            /*else {
+                elozo->kov = l->kov;
+                free(l);
+                l = elozo->kov;
+            }*/
+        }
+
+        elozo = l;
+        l = l->kov;
+    }
+}
+
 
 void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture, Lovedek **lovedek) {
     jatekosFrissites(jatekos, jatek, palya, texture, lovedek);
     peldanyFrissites(jatekos);
+    lovedekFrissites(lovedek);
 }

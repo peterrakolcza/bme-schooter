@@ -53,11 +53,38 @@ void szovegRajzolas(SDL_Renderer *renderer, TTF_Font *font, int x, int y, char m
     SDL_DestroyTexture(felirat_t);
 }
 
-void HUDrajzolas(void) {
-    szovegRajzolas(renderer, font, 0, 0, "jatekos", 255, 255, 255);
+void HUDrajzolas(SDL_Renderer *renderer, TTF_Font *font, Peldany *jatekos, Palya *palya) {
+    char mit[4];
+
+    sprintf(mit, "%d", jatekos->elet);
+    szovegRajzolas(renderer, font, 10, 10, "Élet: ", 255, 255, 255);
+    szovegRajzolas(renderer, font, 110, 10, mit, 255, 255, 255);
+
+    //sprintf(elet, "%d", jatekos->elet);
+    szovegRajzolas(renderer, font, 330, 10, "Pont: ", 255, 255, 255);
+    szovegRajzolas(renderer, font, 430, 10, "0", 255, 255, 255);
+
+    if (jatekos->fegyver == Pisztoly) {
+        sprintf(mit, "%d", palya->tolteny[0]);
+        szovegRajzolas(renderer, font, 650, 10, "Pisztoly: ", 255, 0, 0);
+        szovegRajzolas(renderer, font, 800, 10, mit, 255, 0, 0);
+
+        sprintf(mit, "%d", palya->tolteny[1]);
+        szovegRajzolas(renderer, font, 970, 10, "Gépfegyver: ", 255, 255, 255);
+        szovegRajzolas(renderer, font, 1170, 10, mit, 255, 255, 255);
+    }
+    else {
+        sprintf(mit, "%d", palya->tolteny[0]);
+        szovegRajzolas(renderer, font, 650, 10, "Pisztoly: ", 255, 255, 255);
+        szovegRajzolas(renderer, font, 800, 10, mit, 255, 255, 255);
+
+        sprintf(mit, "%d", palya->tolteny[1]);
+        szovegRajzolas(renderer, font, 970, 10, "Gépfegyver: ", 255, 0, 0);
+        szovegRajzolas(renderer, font, 1170, 10, mit, 255, 0, 0);
+    }
 }
 
-void rajz(SDL_Texture *celzo, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, SDL_Renderer *renderer, TTF_Font *font) {
+void rajz(SDL_Texture *celzo, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, Palya *palya, SDL_Renderer *renderer, TTF_Font *font) {
     blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
 
     Peldany *e;
@@ -70,5 +97,5 @@ void rajz(SDL_Texture *celzo, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, 
         blitRotated(l->texture, l->x, l->y, l->szog, renderer);
     }
 
-    HUDrajzolas();
+    HUDrajzolas(renderer, font, jatekos, palya);
 }

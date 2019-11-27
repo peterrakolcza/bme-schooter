@@ -47,7 +47,7 @@ static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek, Jat
     l->x = jatekos->x;
     l->y = jatekos->y;
     l->texture = texture;
-    l->elet = 60 * 2;
+    l->elet = 120;
     l->szog = jatekos->szog;
 
     calcSlope(jatek->eger.x, jatek->eger.y, l->x, l->y, &l->dx, &l->dy);

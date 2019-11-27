@@ -12,6 +12,7 @@
 #include "init.h"
 #include "bemenet.h"
 #include "jatekmenet.h"
+#include "rajzolas.h"
 
 static void capFrameRate(long *then, float *remainder)
 {
@@ -44,6 +45,8 @@ int main(int argc, char *argv[]) {
     initPalya(renderer, &jatekos, &palya, &jatek);
 
     SDL_Texture *lovedekTexture = loadImage(renderer, "gfx/bullet2.png");
+    SDL_Texture *celzo = loadImage(renderer, "gfx/targetter.png");
+    TTF_Font *font = initTTF("gfx/LiberationSerif-Regular.ttf", 32);
 
     /*Peldany *e;
     int db = 0;
@@ -66,7 +69,7 @@ int main(int argc, char *argv[]) {
         while (SDL_PollEvent(&esemeny)) {
             switch (esemeny.type) {
                 case SDL_QUIT:
-                    felszabaditas(jatekos);
+                    felszabaditas(jatekos, lovedek);
                     /* ablak bezarasa */
                     torles(renderer, window);
                     exit(0);
@@ -102,7 +105,7 @@ int main(int argc, char *argv[]) {
 
         jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, &lovedek);
 
-        rajz(&jatek, jatekos, lovedek, renderer);
+        rajz(celzo, &jatek, jatekos, lovedek, renderer);
 
         kepernyo(renderer);
 

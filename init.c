@@ -4,8 +4,6 @@
 
 #include "init.h"
 
-static SDL_Texture *celzo;
-
 void init(SDL_Renderer **renderer1, SDL_Window **window1) {
     /* SDL inicializálása és ablak megnyitása */
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -43,22 +41,6 @@ SDL_Texture* loadImage(SDL_Renderer *renderer, char path[]) {
     return kep;
 }
 
-void blit(SDL_Texture *texture, int x, int y, int center, SDL_Renderer *renderer)
-{
-    SDL_Rect dest;
-
-    dest.x = x;
-    dest.y = y;
-    SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
-
-    if (center) {
-        dest.x -= dest.w / 2;
-        dest.y -= dest.h / 2;
-    }
-
-    SDL_RenderCopy(renderer, texture, NULL, &dest);
-}
-
 void felkeszites(SDL_Renderer *renderer) {
     SDL_SetRenderDrawColor(renderer, 32, 32, 32, 255);
     SDL_RenderClear(renderer);
@@ -75,18 +57,6 @@ void torles(SDL_Renderer *renderer, SDL_Window *window) {
     SDL_DestroyWindow(window);
 
     SDL_Quit();
-}
-
-void blitRotated(SDL_Texture *texture, int x, int y, float angle, SDL_Renderer *renderer) {
-    SDL_Rect dstRect;
-
-    dstRect.x = x;
-    dstRect.y = y;
-    SDL_QueryTexture(texture, NULL, NULL, &dstRect.w, &dstRect.h);
-    dstRect.x -= (dstRect.w / 2);
-    dstRect.y -= (dstRect.h / 2);
-
-    SDL_RenderCopyEx(renderer, texture, NULL, &dstRect, angle, NULL, SDL_FLIP_NONE);
 }
 
 void initJatekos(Peldany **jatekos, SDL_Renderer *renderer, Palya *palya)
@@ -109,7 +79,6 @@ void initJatekos(Peldany **jatekos, SDL_Renderer *renderer, Palya *palya)
 }
 
 void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya, Jatek *jatek) {
-    celzo = loadImage(renderer, "gfx/targetter.png");
     initJatekos(jatekos, renderer, palya);
 
     for (int i = 0; i < 6; ++i) {
@@ -122,26 +91,29 @@ void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya, Jatek *j
     }
 }
 
-void rajz(Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, SDL_Renderer *renderer) {
-    blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
-
-    Peldany *e;
-    for (e = jatekos ; e != NULL ; e = e->kov) {
-        blitRotated(e->texture, e->x, e->y, e->szog, renderer);
+TTF_Font* initTTF(char path[], int meret) {
+    TTF_Init();
+    TTF_Font *font = TTF_OpenFont(path, meret);
+    if (!font) {
+        SDL_Log("Nem sikerult megnyitni a fontot! %s\n", TTF_GetError());
     }
 
-    Lovedek *l;
-    for (l = lovedek ; l != NULL ; l = l->kov) {
-        blitRotated(l->texture, l->x, l->y, l->szog, renderer);
-    }
+    return font;
 }
 
-void felszabaditas(Peldany *jatekos) {
+void felszabaditas(Peldany *jatekos, Lovedek *lovedek) {
     Peldany *e = jatekos;
     while (e != NULL) {
         Peldany *temp = e->kov;
         free(e);
         e = temp;
+    }
+
+    Lovedek *e2 = lovedek;
+    while (e2 != NULL) {
+        Lovedek *temp = e2->kov;
+        free(e2);
+        e2 = temp;
     }
 }
 

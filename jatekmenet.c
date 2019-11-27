@@ -108,14 +108,11 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture 
         palya->tolteny[jatekos->fegyver]--;
     }
 
-    if (jatek->eger.gorgo < 0) {
-        jatekos->fegyver = Pisztoly;
-
-        jatek->eger.gorgo = 0;
-    }
-
-    if (jatek->eger.gorgo > 0) {
-        jatekos->fegyver = GepFegyver;
+    if (jatek->eger.gorgo != 0) {
+        if (jatekos->fegyver == Pisztoly)
+            jatekos->fegyver = GepFegyver;
+        else
+            jatekos->fegyver = Pisztoly;
 
         jatek->eger.gorgo = 0;
     }
@@ -133,16 +130,24 @@ void lovedekFrissites(Lovedek **lovedek) {
     Lovedek *l = *lovedek;
     Lovedek *elozo = NULL;
 
-    while (l != NULL) {
+    for (l = *lovedek; l != NULL; l = l->kov) {
         l->x += l->dx;
         l->y += l->dy;
-
-        if (--l->elet <= 0) {
-
+        if (l->elet == 0) {
+            if (elozo == NULL) {
+                *lovedek = NULL;
+                free(l);
+                break;
+            }
+            else {
+                free(l);
+                l = NULL;
+            }
         }
-
-        elozo = l;
-        l = l->kov;
+        if (l != NULL) {
+            l->elet--;
+            elozo = l;
+        }
     }
 }
 

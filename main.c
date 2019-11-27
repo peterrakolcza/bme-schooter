@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     init(&renderer, &window);
     initPalya(renderer, &jatekos, &palya, &jatek);
 
-    SDL_Texture *lovedekTexture = loadImage(renderer, "gfx/bullet.png");
+    SDL_Texture *lovedekTexture = loadImage(renderer, "gfx/bullet2.png");
 
     /*Peldany *e;
     int db = 0;
@@ -110,6 +110,7 @@ int main(int argc, char *argv[]) {
 
         //printf("%d ", jatekos->fegyver);
         //printf("%d ", jatekos->ujratoltIdo);
+        //printf("%d ", jatekos->szog);
     }
 
     return 0;

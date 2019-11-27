@@ -99,7 +99,7 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture 
 
     jatekos->szog = szog(jatekos->x, jatekos->y, jatek->eger.x, jatek->eger.y);
 
-    if (jatekos->ujratoltIdo == 0 && palya->tolteny[jatekos->fegyver] > 0 && jatek->eger.gomb[SDL_BUTTON_LEFT]) {
+    if (jatekos->ujratoltIdo == 0 && palya->tolteny[jatekos->fegyver] > 0 && jatek->eger.gomb[SDL_BUTTON_LEFT] && (jatek->eger.x != jatekos->x && jatek->eger.y != jatekos->y)) {
         loves(jatekos, texture, lovedek, jatek);
         /*for (int i = 0; i < 6; ++i) {
             printf("%d ", jatek->eger.gomb[i]);
@@ -128,26 +128,30 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture 
 
 void lovedekFrissites(Lovedek **lovedek) {
     Lovedek *l = *lovedek;
-    Lovedek *elozo = NULL;
+    Lovedek *lemarado = NULL;
 
     for (l = *lovedek; l != NULL; l = l->kov) {
         l->x += l->dx;
         l->y += l->dy;
-        if (l->elet == 0) {
-            if (elozo == NULL) {
-                *lovedek = NULL;
-                free(l);
-                break;
-            }
-            else {
-                free(l);
-                l = NULL;
-            }
-        }
-        if (l != NULL) {
-            l->elet--;
-            elozo = l;
-        }
+        l->elet--;
+    }
+
+    l = *lovedek;
+    while (l != NULL && l->elet != 0) {
+        lemarado = l;
+        l = l->kov;
+    }
+    if (l == NULL) {
+        return;
+    }
+    else if (lemarado == NULL) { /* az első elemet kell törölni */
+        Lovedek *ujeleje = l->kov;
+        free(l);
+        *lovedek = ujeleje;
+    }
+    else {                       /* a közepéről/végéről törlünk */
+        lemarado->kov = l->kov;
+        free(l);
     }
 }
 

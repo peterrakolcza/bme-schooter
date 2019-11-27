@@ -32,7 +32,32 @@ void blitRotated(SDL_Texture *texture, int x, int y, float angle, SDL_Renderer *
     SDL_RenderCopyEx(renderer, texture, NULL, &dstRect, angle, NULL, SDL_FLIP_NONE);
 }
 
-void rajz(SDL_Texture *celzo, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, SDL_Renderer *renderer) {
+void szovegRajzolas(SDL_Renderer *renderer, TTF_Font *font, int x, int y, char mit[], int R, int G, int B) {
+    SDL_Surface *felirat;
+    SDL_Texture *felirat_t;
+
+    SDL_Color szin = {R, G, B};
+
+    SDL_Rect hova = { 0, 0, 0, 0 };
+
+    felirat = TTF_RenderUTF8_Blended(font, mit, szin);
+    felirat_t = SDL_CreateTextureFromSurface(renderer, felirat);
+
+    hova.x = x;
+    hova.y = y;
+    hova.w = felirat->w;
+    hova.h = felirat->h;
+
+    SDL_RenderCopy(renderer, felirat_t, NULL, &hova);
+    SDL_FreeSurface(felirat);
+    SDL_DestroyTexture(felirat_t);
+}
+
+void HUDrajzolas(void) {
+    szovegRajzolas(renderer, font, 0, 0, "jatekos", 255, 255, 255);
+}
+
+void rajz(SDL_Texture *celzo, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, SDL_Renderer *renderer, TTF_Font *font) {
     blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
 
     Peldany *e;
@@ -44,4 +69,6 @@ void rajz(SDL_Texture *celzo, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, 
     for (l = lovedek ; l != NULL ; l = l->kov) {
         blitRotated(l->texture, l->x, l->y, l->szog, renderer);
     }
+
+    HUDrajzolas();
 }

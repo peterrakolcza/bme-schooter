@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 
         jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, &lovedek);
 
-        rajz(celzo, &jatek, jatekos, lovedek, renderer);
+        rajz(celzo, &jatek, jatekos, lovedek, renderer, font);
 
         kepernyo(renderer);
 

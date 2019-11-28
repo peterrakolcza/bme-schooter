@@ -110,7 +110,7 @@ int main(int argc, char *argv[]) {
         SDL_GetMouseState(&jatek.eger.x, &jatek.eger.y);
         //printf("%d %d", jatek->eger.x, jatek->eger.y);
 
-        jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, ellenseg, elet, &lovedek, &powerup);
+        jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, ellenseg, elet, tolteny, &lovedek, &powerup);
 
         rajz(celzo, grid, hatter, &jatek, jatekos, lovedek, powerup, &palya, renderer, font);
 

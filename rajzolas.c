@@ -95,8 +95,8 @@ void mintazat(SDL_Texture *grid, SDL_Renderer *renderer)
 
 void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, PowerUp *powerup, Palya *palya, SDL_Renderer *renderer, TTF_Font *font) {
 
-    //mintazat(grid, renderer);
-    //blit(hatter, 0, 0, 0, renderer);
+    mintazat(grid, renderer);
+    blit(hatter, 0, 0, 0, renderer);
 
     blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
 

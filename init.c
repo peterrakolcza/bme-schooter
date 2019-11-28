@@ -84,6 +84,9 @@ void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya, Jatek *j
     initJatekos(jatekos, renderer, palya);
 
     palya->pont = 0;
+    palya->spawnIdozito = 0;
+
+
     for (int i = 0; i < 6; ++i) {
         jatek->eger.gomb[i] = 0;
     }

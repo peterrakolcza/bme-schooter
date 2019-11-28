@@ -37,6 +37,7 @@ typedef struct Eger {
 
 typedef struct Palya {
     int pont;
+    int spawnIdozito;
     int tolteny[2];
 } Palya;
 

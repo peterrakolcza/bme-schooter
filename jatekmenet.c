@@ -70,8 +70,28 @@ static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek, Jat
     else jatekos->ujratoltIdo = 16;
 }
 
+void hozzaadRandomPowerup(int x, int y) {
+    int veletlen;
 
-void peldanyFrissites(Peldany *jatekos) {
+    veletlen = rand() % 5;
+
+    if (veletlen == 0) {
+        addHealthPowerup(x, y);
+    }
+    else if (veletlen == 1) {
+        addUziPowerup(x, y);
+    }
+}
+
+void halal(Palya *palya, Peldany *e) {
+    if (rand() % 2 == 0) {
+        hozzaadRandomPowerup(e->x, e->y);
+    }
+
+    palya->pont += 10;
+}
+
+void peldanyFrissites(Peldany *jatekos, Palya *palya) {
     Peldany *p;
     Peldany *lemarado = NULL;
 
@@ -101,6 +121,7 @@ void peldanyFrissites(Peldany *jatekos) {
     else if (p->elet == 0) {
         lemarado->kov = p->kov;
         free(p);
+        halal(palya, p);
     }
 }
 
@@ -208,16 +229,7 @@ void tick(Peldany* peldany, Peldany *jatekos) {
     calcSlope(jatekos->x, jatekos->y, jatekos->x, jatekos->y, &peldany->dx, &peldany->dy);
 }
 
-void halal(Palya *palya) {
-    if (rand() % 2 == 0) {
-        //addRandomPowerup(self->x, self->y);
-    }
-
-    palya->pont += 10;
-}
-
-void ellensegHozzaad(int x, int y, Peldany *jatekos, SDL_Texture *ellenseg, Palya *palya)
-{
+void ellensegHozzaad(int x, int y, Peldany *jatekos, SDL_Texture *ellenseg, Palya *palya) {
     Peldany *e;
 
     e = malloc(sizeof(Peldany));
@@ -236,11 +248,43 @@ void ellensegHozzaad(int x, int y, Peldany *jatekos, SDL_Texture *ellenseg, Paly
     e->hatokor = 32;
 }
 
+static void spawnEnemy(SDL_Texture *ellenseg, Peldany *jatekos, Palya *palya) {
+    int x, y;
+
+    if (--palya->spawnIdozito <= 0) {
+        switch (rand() % 4) {
+            case 0:
+                x = -100;
+                y = rand() % 720;
+                break;
+
+            case 1:
+                x = 1280 + 100;
+                y = rand() % 720;
+                break;
+
+            case 2:
+                x = rand() % 1280;
+                y = -100;
+                break;
+
+            case 3:
+                x = rand() % 1280;
+                y = 720 + 100;
+                break;
+        }
+
+        //printf("%d %d ", x, y);
+        ellensegHozzaad(x, y, jatekos, ellenseg, palya);
+
+        palya->spawnIdozito = 60 + (rand() % 60);
+    }
+}
 
 
 void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture, SDL_Texture *ellenseg, Lovedek **lovedek) {
     jatekosFrissites(jatekos, jatek, palya, texture, lovedek);
-    peldanyFrissites(jatekos);
+    peldanyFrissites(jatekos, palya);
     lovedekFrissites(lovedek, jatekos);
-    //ellensegHozzaad(jatekos->x, jatekos->y, jatekos, ellenseg, palya);
+    spawnEnemy(ellenseg, jatekos, palya);
 }

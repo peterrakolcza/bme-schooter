@@ -61,7 +61,7 @@ void HUDrajzolas(SDL_Renderer *renderer, TTF_Font *font, Peldany *jatekos, Palya
 
     sprintf(mit, "%d", palya->pont);
     szovegRajzolas(renderer, font, 340, 10, "Pont: ", 255, 255, 255);
-    szovegRajzolas(renderer, font, 440, 10, "0", 255, 255, 255);
+    szovegRajzolas(renderer, font, 440, 10, mit, 255, 255, 255);
 
     if (jatekos->fegyver == Pisztoly) {
         sprintf(mit, "%d", palya->tolteny[0]);

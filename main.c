@@ -33,6 +33,7 @@ static void capFrameRate(long *then, float *remainder) {
 }
 
 int main(int argc, char *argv[]) {
+    srand(time(NULL));
     SDL_Renderer *renderer;
     SDL_Window *window;
 
@@ -50,6 +51,8 @@ int main(int argc, char *argv[]) {
     TTF_Font *font = initTTF("gfx/LiberationSerif-Regular.ttf", 32);
     SDL_Texture *hatter = loadImage(renderer, "gfx/background.png");
     SDL_Texture *ellenseg = loadImage(renderer, "gfx/enemy01.png");
+    SDL_Texture *elet = loadImage(renderer, "gfx/health.png");
+    SDL_Texture *tolteny = loadImage(renderer, "gfx/uzi.png");
 
     /*Peldany *e;
     int db = 0;
@@ -61,8 +64,6 @@ int main(int argc, char *argv[]) {
 
     long most = SDL_GetTicks();
     float maradt = 0;
-
-    ellensegHozzaad(jatekos->x, jatekos->y, jatekos, ellenseg, &palya);
 
     /* varunk a kilepesre */
     while (true) {

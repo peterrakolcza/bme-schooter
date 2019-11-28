@@ -95,8 +95,8 @@ void mintazat(SDL_Texture *grid, SDL_Renderer *renderer)
 
 void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, PowerUp *powerup, Palya *palya, SDL_Renderer *renderer, TTF_Font *font) {
 
-    mintazat(grid, renderer);
-    blit(hatter, 0, 0, 0, renderer);
+    //mintazat(grid, renderer);
+    //blit(hatter, 0, 0, 0, renderer);
 
     blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
 
@@ -111,9 +111,12 @@ void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jat
     }
 
     PowerUp *p;
+    int db = 0;
     for (p = powerup ; p != NULL ; p = p->kov) {
-        blitRotated(p->texture, p->x, p->y, 0, renderer);
+        blit(p->texture, 100, 100, 1, renderer);
+        db++;
     }
+    printf("%d", db);
 
     HUDrajzolas(renderer, font, jatekos, palya);
 }

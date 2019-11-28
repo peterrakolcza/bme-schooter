@@ -70,10 +70,10 @@ static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek, Jat
     else jatekos->ujratoltIdo = 16;
 }
 
-PowerUp *Powerup(int x, int y) {
+void addHealthPowerup(int x, int y, PowerUp **powerup, SDL_Texture *elet)
+{
     PowerUp *e;
-
-    e = malloc(sizeof(Powerup));
+    e = malloc(sizeof(PowerUp));
     memset(e, 0, sizeof(PowerUp));
 
     e->x = x;
@@ -87,14 +87,6 @@ PowerUp *Powerup(int x, int y) {
 
     e->dx /= 100;
     e->dy /= 100;
-
-    return e;
-}
-
-static void addHealthPowerup(int x, int y, PowerUp **powerup, SDL_Texture *elet)
-{
-    PowerUp *e;
-    e = Powerup(x, y);
 
     if (*powerup == NULL)
         *powerup = e;
@@ -328,21 +320,26 @@ void spawnEllenseg(SDL_Texture *ellenseg, Peldany *jatekos, Palya *palya) {
     }
 }
 
-void powerupFrissites(PowerUp *powerup) {
+void powerupFrissites(PowerUp **powerup) {
     PowerUp *p;
     PowerUp *lemarado = NULL;
 
-    for (p = powerup ; p != NULL ; p = p->kov) {
-        p->elet = MAX(p->elet - 1, 0);
+    for (p = *powerup ; p != NULL ; p = p->kov) {
+        p->elet--;
     }
 
-    p = powerup;
+    p = *powerup;
     while (p != NULL && p->elet != 0) {
         lemarado = p;
         p = p->kov;
     }
     if (p == NULL) {
         return;
+    }
+    else if (lemarado == NULL) { /* az első elemet kell törölni */
+        PowerUp *ujeleje = p->kov;
+        free(p);
+        *powerup = ujeleje;
     }
     else {
         lemarado->kov = p->kov;
@@ -355,7 +352,7 @@ void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *t
     peldanyFrissites(jatekos, palya, elet, powerup);
     lovedekFrissites(lovedek, jatekos);
 
-    powerupFrissites(*powerup);
+    powerupFrissites(powerup);
 
     spawnEllenseg(ellenseg, jatekos, palya);
 }

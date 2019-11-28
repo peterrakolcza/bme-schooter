@@ -35,6 +35,11 @@ typedef struct Eger {
     int gorgo;
 } Eger;
 
+typedef struct Palya {
+    int pont;
+    int tolteny[2];
+} Palya;
+
 typedef struct Peldany {
     float x;
     float y;
@@ -45,6 +50,9 @@ typedef struct Peldany {
     int ujratoltIdo;
     int elet;
     int szog;
+    //0 barát, 1 ellenség, 2 semmi
+    int oldal;
+    int hatokor;
     Fegyver fegyver;
     SDL_Texture *texture;
     struct Peldany *kov;
@@ -58,14 +66,13 @@ typedef struct Lovedek {
     float dx;
     float dy;
     int elet;
+    int oldal;
+    int hatokor;
     int szog;
     SDL_Texture *texture;
     struct Lovedek *kov;
 } Lovedek;
 
-typedef struct {
-    int tolteny[2];
-} Palya;
 
 typedef struct Jatek {
     Eger eger;

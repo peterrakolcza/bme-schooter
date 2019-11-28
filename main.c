@@ -46,9 +46,10 @@ int main(int argc, char *argv[]) {
 
     SDL_Texture *lovedekTexture = loadImage(renderer, "gfx/bullet2.png");
     SDL_Texture *celzo = loadImage(renderer, "gfx/targetter.png");
-    SDL_Texture *grid = loadImage(renderer, "gfx/tile.png");
+    SDL_Texture *grid = loadImage(renderer, "gfx/grid01.png");
     TTF_Font *font = initTTF("gfx/LiberationSerif-Regular.ttf", 32);
     SDL_Texture *hatter = loadImage(renderer, "gfx/background.png");
+    SDL_Texture *ellenseg = loadImage(renderer, "gfx/enemy01.png");
 
     /*Peldany *e;
     int db = 0;
@@ -105,7 +106,7 @@ int main(int argc, char *argv[]) {
         SDL_GetMouseState(&jatek.eger.x, &jatek.eger.y);
         //printf("%d %d", jatek->eger.x, jatek->eger.y);
 
-        jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, &lovedek);
+        jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, ellenseg, &lovedek);
 
         rajz(celzo, grid, hatter, &jatek, jatekos, lovedek, &palya, renderer, font);
 

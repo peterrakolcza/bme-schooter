@@ -4,13 +4,21 @@
 
 #include "jatekmenet.h"
 
+int getDistance(int x1, int y1, int x2, int y2) {
+    int x, y;
+
+    x = x2 - x1;
+    y = y2 - y1;
+
+    return sqrt(x * x + y *y);
+}
+
 float szog(int x1, int y1, int x2, int y2) {
     float angle = -90 + atan2(y1 - y2, x1 - x2) * (180 / PI);
     return angle >= 0 ? angle : 360 + angle;
 }
 
-void calcSlope(int x1, int y1, int x2, int y2, float *dx, float *dy)
-{
+void calcSlope(int x1, int y1, int x2, int y2, float *dx, float *dy) {
     int steps = MAX(abs(x1 - x2), abs(y1 - y2));
 
     if (steps == 0) {
@@ -46,6 +54,8 @@ static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek, Jat
 
     l->x = jatekos->x;
     l->y = jatekos->y;
+    l->oldal = jatekos->oldal;
+    l->hatokor = jatekos->hatokor;
     l->texture = texture;
     l->elet = 120;
     l->szog = jatekos->szog;
@@ -126,18 +136,38 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture 
     }
 }
 
-void lovedekFrissites(Lovedek **lovedek) {
+void lovedekTalaltE(Lovedek *l, Peldany *jatekos) {
+    Peldany *e;
+    int tavolsag;
+
+    if (l != NULL) {
+        for (e = jatekos; e != NULL; e = e->kov) {
+            if (e->oldal != 2 && e->oldal != l->oldal) {
+                tavolsag = getDistance(e->x, e->y, l->x, l->y);
+
+                if (tavolsag < e->hatokor + l->hatokor) {
+                    l->elet = 0;
+                    e->elet--;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void lovedekFrissites(Lovedek **lovedek, Peldany *jatekos) {
     Lovedek *l = *lovedek;
     Lovedek *lemarado = NULL;
 
     for (l = *lovedek; l != NULL; l = l->kov) {
         l->x += l->dx;
         l->y += l->dy;
+        lovedekTalaltE(l, jatekos);
         l->elet--;
     }
 
     l = *lovedek;
-    while (l != NULL && l->elet != 0) {
+    while (l != NULL && l->elet > 0) {
         lemarado = l;
         l = l->kov;
     }
@@ -155,9 +185,45 @@ void lovedekFrissites(Lovedek **lovedek) {
     }
 }
 
+void tick(Peldany* peldany, Peldany *jatekos) {
+    peldany->szog = szog(peldany->x, peldany->y, jatekos->x, jatekos->y);
 
-void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture, Lovedek **lovedek) {
+    calcSlope(jatekos->x, jatekos->y, jatekos->x, jatekos->y, &peldany->dx, &peldany->dy);
+}
+
+void halal(Palya *palya) {
+    if (rand() % 2 == 0) {
+        //addRandomPowerup(self->x, self->y);
+    }
+
+    palya->pont += 10;
+}
+
+void ellensegHozzaad(int x, int y, Peldany *jatekos, SDL_Texture *ellenseg, Palya *palya)
+{
+    Peldany *e;
+
+    e = malloc(sizeof(Peldany));
+    memset(e, 0, sizeof(Peldany));
+    Peldany *mozgo = jatekos;
+    while (mozgo->kov != NULL) mozgo = mozgo->kov;
+    mozgo->kov = e;
+    e->kov = NULL;
+
+    e->oldal = 1;
+    e->texture = ellenseg;
+    e->elet = 2;
+    e->x = x;
+    e->y = y;
+    SDL_QueryTexture(e->texture, NULL, NULL, &e->w, &e->h);
+    e->hatokor = 32;
+}
+
+
+
+void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture, SDL_Texture *ellenseg, Lovedek **lovedek) {
     jatekosFrissites(jatekos, jatek, palya, texture, lovedek);
     peldanyFrissites(jatekos);
-    lovedekFrissites(lovedek);
+    lovedekFrissites(lovedek, jatekos);
+    ellensegHozzaad(100, 100, jatekos, ellenseg, palya);
 }

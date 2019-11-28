@@ -59,7 +59,7 @@ void HUDrajzolas(SDL_Renderer *renderer, TTF_Font *font, Peldany *jatekos, Palya
     szovegRajzolas(renderer, font, 20, 10, "Élet: ", 255, 255, 255);
     szovegRajzolas(renderer, font, 120, 10, mit, 255, 255, 255);
 
-    //sprintf(elet, "%d", jatekos->elet);
+    sprintf(mit, "%d", palya->pont);
     szovegRajzolas(renderer, font, 340, 10, "Pont: ", 255, 255, 255);
     szovegRajzolas(renderer, font, 440, 10, "0", 255, 255, 255);
 

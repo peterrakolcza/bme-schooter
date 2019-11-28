@@ -67,6 +67,8 @@ void initJatekos(Peldany **jatekos, SDL_Renderer *renderer, Palya *palya)
 
     (*jatekos)->texture = loadImage(renderer, "gfx/donk.png");
     (*jatekos)->elet = 5;
+    (*jatekos)->hatokor = 0;
+    (*jatekos)->oldal = 0;
 
     palya->tolteny[Pisztoly] = 12;
     palya->tolteny[GepFegyver] = 100;
@@ -81,6 +83,7 @@ void initJatekos(Peldany **jatekos, SDL_Renderer *renderer, Palya *palya)
 void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya, Jatek *jatek) {
     initJatekos(jatekos, renderer, palya);
 
+    palya->pont = 0;
     for (int i = 0; i < 6; ++i) {
         jatek->eger.gomb[i] = 0;
     }

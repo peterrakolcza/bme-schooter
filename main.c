@@ -62,6 +62,8 @@ int main(int argc, char *argv[]) {
     long most = SDL_GetTicks();
     float maradt = 0;
 
+    ellensegHozzaad(jatekos->x, jatekos->y, jatekos, ellenseg, &palya);
+
     /* varunk a kilepesre */
     while (true) {
         felkeszites(renderer);

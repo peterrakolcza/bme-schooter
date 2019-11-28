@@ -73,6 +73,7 @@ static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek, Jat
 
 void peldanyFrissites(Peldany *jatekos) {
     Peldany *p;
+    Peldany *lemarado = NULL;
 
     for (p = jatekos ; p != NULL ; p = p->kov) {
         p->x += p->dx;
@@ -84,6 +85,22 @@ void peldanyFrissites(Peldany *jatekos) {
             p->x = MIN(MAX(p->x, p->w / 2), SCREEN_WIDTH - p->w / 2);
             p->y = MIN(MAX(p->y, p->h / 2), SCREEN_HEIGHT - p->h / 2);
         }
+
+    }
+
+
+
+    p = jatekos;
+    while (p != NULL && p->elet != 0) {
+        lemarado = p;
+        p = p->kov;
+    }
+    if (p == NULL) {
+        return;
+    }
+    else if (p->elet == 0) {
+        lemarado->kov = p->kov;
+        free(p);
     }
 }
 
@@ -225,5 +242,5 @@ void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *t
     jatekosFrissites(jatekos, jatek, palya, texture, lovedek);
     peldanyFrissites(jatekos);
     lovedekFrissites(lovedek, jatekos);
-    ellensegHozzaad(100, 100, jatekos, ellenseg, palya);
+    //ellensegHozzaad(jatekos->x, jatekos->y, jatekos, ellenseg, palya);
 }

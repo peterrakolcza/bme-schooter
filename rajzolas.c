@@ -111,12 +111,9 @@ void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jat
     }
 
     PowerUp *p;
-    int db = 0;
     for (p = powerup ; p != NULL ; p = p->kov) {
-        blit(p->texture, 100, 100, 1, renderer);
-        db++;
+        blit(p->texture, p->x, p->y, 1, renderer);
     }
-    printf("%d", db);
 
     HUDrajzolas(renderer, font, jatekos, palya);
 }

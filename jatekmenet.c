@@ -105,7 +105,7 @@ void hozzaadRandomPowerup(int x, int y, PowerUp **powerup, SDL_Texture *elet) {
 
     veletlen = rand() % 5;
 
-    if (0 == 0) {
+    if (veletlen == 0) {
         addHealthPowerup(x, y, powerup, elet);
     }
     else if (veletlen == 1) {
@@ -114,7 +114,7 @@ void hozzaadRandomPowerup(int x, int y, PowerUp **powerup, SDL_Texture *elet) {
 }
 
 void halal(Palya *palya, Peldany *e, PowerUp **powerup, SDL_Texture *elet) {
-    if (0 == 0) {
+    if (rand() % 2 == 0) {
         hozzaadRandomPowerup(e->x, e->y, powerup, elet);
     }
 
@@ -161,8 +161,8 @@ void peldanyFrissites(Peldany *jatekos, Palya *palya, SDL_Texture *elet, PowerUp
     }
     else {
         lemarado->kov = p->kov;
-        free(p);
         halal(palya, p, powerup, elet);
+        free(p);
     }
 }
 
@@ -280,6 +280,8 @@ void ellensegHozzaad(int x, int y, Peldany *jatekos, SDL_Texture *ellenseg, Paly
     e->elet = 2;
     e->x = x;
     e->y = y;
+    e->dx = 0;
+    e->dy = 0;
     SDL_QueryTexture(e->texture, NULL, NULL, &e->w, &e->h);
     e->hatokor = 32;
 }

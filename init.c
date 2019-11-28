@@ -107,7 +107,7 @@ TTF_Font* initTTF(char path[], int meret) {
     return font;
 }
 
-void felszabaditas(Peldany *jatekos, Lovedek *lovedek) {
+void felszabaditas(Peldany *jatekos, Lovedek *lovedek, PowerUp *powerup) {
     Peldany *e = jatekos;
     while (e != NULL) {
         Peldany *temp = e->kov;
@@ -120,6 +120,13 @@ void felszabaditas(Peldany *jatekos, Lovedek *lovedek) {
         Lovedek *temp = e2->kov;
         free(e2);
         e2 = temp;
+    }
+
+    PowerUp *e3 = powerup;
+    while (e3 != NULL) {
+        PowerUp *temp = e3->kov;
+        free(e3);
+        e3 = temp;
     }
 }
 

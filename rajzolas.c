@@ -93,7 +93,7 @@ void mintazat(SDL_Texture *grid, SDL_Renderer *renderer)
     }
 }
 
-void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, Palya *palya, SDL_Renderer *renderer, TTF_Font *font) {
+void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, PowerUp *powerup, Palya *palya, SDL_Renderer *renderer, TTF_Font *font) {
 
     mintazat(grid, renderer);
     blit(hatter, 0, 0, 0, renderer);
@@ -108,6 +108,11 @@ void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jat
     Lovedek *l;
     for (l = lovedek ; l != NULL ; l = l->kov) {
         blitRotated(l->texture, l->x, l->y, l->szog, renderer);
+    }
+
+    PowerUp *p;
+    for (p = powerup ; p != NULL ; p = p->kov) {
+        blitRotated(p->texture, p->x, p->y, 0, renderer);
     }
 
     HUDrajzolas(renderer, font, jatekos, palya);

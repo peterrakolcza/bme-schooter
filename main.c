@@ -3,7 +3,7 @@
 //
 
 
-/*TODO: kell-e dupla indirekció jatekosnal?
+/*TODO: peldanyok egymassal valo collisionjet nem nezem!
  *
  *
  * */
@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
     Palya palya;
     Peldany *jatekos = NULL;
     Lovedek *lovedek = NULL;
+    PowerUp *powerup = NULL;
 
     init(&renderer, &window);
     initPalya(renderer, &jatekos, &palya, &jatek);
@@ -75,7 +76,7 @@ int main(int argc, char *argv[]) {
         while (SDL_PollEvent(&esemeny)) {
             switch (esemeny.type) {
                 case SDL_QUIT:
-                    felszabaditas(jatekos, lovedek);
+                    felszabaditas(jatekos, lovedek, powerup);
                     /* ablak bezarasa */
                     torles(renderer, window);
                     exit(0);
@@ -109,9 +110,9 @@ int main(int argc, char *argv[]) {
         SDL_GetMouseState(&jatek.eger.x, &jatek.eger.y);
         //printf("%d %d", jatek->eger.x, jatek->eger.y);
 
-        jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, ellenseg, &lovedek);
+        jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, ellenseg, elet, &lovedek, &powerup);
 
-        rajz(celzo, grid, hatter, &jatek, jatekos, lovedek, &palya, renderer, font);
+        rajz(celzo, grid, hatter, &jatek, jatekos, lovedek, powerup, &palya, renderer, font);
 
         kepernyo(renderer);
 

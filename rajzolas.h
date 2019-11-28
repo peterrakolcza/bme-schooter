@@ -7,6 +7,6 @@
 
 #include "kozos.h"
 
-void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, Palya *palya, SDL_Renderer *renderer, TTF_Font *font);
+void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, PowerUp *powerup, Palya *palya, SDL_Renderer *renderer, TTF_Font *font);
 
 #endif //BME_SCHOOTER_RAJZOLAS_H

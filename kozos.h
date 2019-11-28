@@ -59,6 +59,21 @@ typedef struct Peldany {
     struct Peldany *kov;
 } Peldany;
 
+typedef struct PowerUp {
+    float x;
+    float y;
+    int w;
+    int h;
+    float dx;
+    float dy;
+    int elet;
+    //0 barát, 1 ellenség, 2 semmi
+    int oldal;
+    int hatokor;
+    SDL_Texture *texture;
+    struct PowerUp *kov;
+} PowerUp;
+
 typedef struct Lovedek {
     float x;
     float y;

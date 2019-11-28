@@ -70,28 +70,73 @@ static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek, Jat
     else jatekos->ujratoltIdo = 16;
 }
 
-void hozzaadRandomPowerup(int x, int y) {
+PowerUp *Powerup(int x, int y) {
+    PowerUp *e;
+
+    e = malloc(sizeof(Powerup));
+    memset(e, 0, sizeof(PowerUp));
+
+    e->x = x;
+    e->y = y;
+    e->elet = 60 * 5;
+    e->hatokor = 16;
+    e->oldal = 2;
+
+    e->dx = -200 + (rand() % 400);
+    e->dy = -200 + (rand() % 400);
+
+    e->dx /= 100;
+    e->dy /= 100;
+
+    return e;
+}
+
+static void addHealthPowerup(int x, int y, PowerUp **powerup, SDL_Texture *elet)
+{
+    PowerUp *e;
+    e = Powerup(x, y);
+
+    if (*powerup == NULL)
+        *powerup = e;
+    else {
+        PowerUp *mozgo = *powerup;
+        while (mozgo->kov != NULL) mozgo = mozgo->kov;
+        mozgo->kov = e;
+    }
+    e->kov = NULL;
+
+    e->texture = elet;
+}
+
+void hozzaadRandomPowerup(int x, int y, PowerUp **powerup, SDL_Texture *elet) {
     int veletlen;
 
     veletlen = rand() % 5;
 
-    if (veletlen == 0) {
-        addHealthPowerup(x, y);
+    if (0 == 0) {
+        addHealthPowerup(x, y, powerup, elet);
     }
     else if (veletlen == 1) {
-        addUziPowerup(x, y);
+        //addUziPowerup(x, y);
     }
 }
 
-void halal(Palya *palya, Peldany *e) {
-    if (rand() % 2 == 0) {
-        hozzaadRandomPowerup(e->x, e->y);
+void halal(Palya *palya, Peldany *e, PowerUp **powerup, SDL_Texture *elet) {
+    if (0 == 0) {
+        hozzaadRandomPowerup(e->x, e->y, powerup, elet);
     }
 
     palya->pont += 10;
 }
 
-void peldanyFrissites(Peldany *jatekos, Palya *palya) {
+
+void tick(Peldany* peldany, Peldany *jatekos) {
+    peldany->szog = szog(peldany->x, peldany->y, jatekos->x, jatekos->y);
+
+    calcSlope(jatekos->x, jatekos->y, jatekos->x, jatekos->y, &peldany->dx, &peldany->dy);
+}
+
+void peldanyFrissites(Peldany *jatekos, Palya *palya, SDL_Texture *elet, PowerUp **powerup) {
     Peldany *p;
     Peldany *lemarado = NULL;
 
@@ -106,6 +151,10 @@ void peldanyFrissites(Peldany *jatekos, Palya *palya) {
             p->y = MIN(MAX(p->y, p->h / 2), SCREEN_HEIGHT - p->h / 2);
         }
 
+        if (p != jatekos) {
+            tick(p, jatekos);
+        }
+
     }
 
 
@@ -118,10 +167,10 @@ void peldanyFrissites(Peldany *jatekos, Palya *palya) {
     if (p == NULL) {
         return;
     }
-    else if (p->elet == 0) {
+    else {
         lemarado->kov = p->kov;
         free(p);
-        halal(palya, p);
+        halal(palya, p, powerup, elet);
     }
 }
 
@@ -223,11 +272,6 @@ void lovedekFrissites(Lovedek **lovedek, Peldany *jatekos) {
     }
 }
 
-void tick(Peldany* peldany, Peldany *jatekos) {
-    peldany->szog = szog(peldany->x, peldany->y, jatekos->x, jatekos->y);
-
-    calcSlope(jatekos->x, jatekos->y, jatekos->x, jatekos->y, &peldany->dx, &peldany->dy);
-}
 
 void ellensegHozzaad(int x, int y, Peldany *jatekos, SDL_Texture *ellenseg, Palya *palya) {
     Peldany *e;
@@ -248,11 +292,11 @@ void ellensegHozzaad(int x, int y, Peldany *jatekos, SDL_Texture *ellenseg, Paly
     e->hatokor = 32;
 }
 
-static void spawnEnemy(SDL_Texture *ellenseg, Peldany *jatekos, Palya *palya) {
+void spawnEllenseg(SDL_Texture *ellenseg, Peldany *jatekos, Palya *palya) {
     int x, y;
 
     if (--palya->spawnIdozito <= 0) {
-        switch (rand() % 4) {
+        /*switch (rand() % 4) {
             case 0:
                 x = -100;
                 y = rand() % 720;
@@ -272,7 +316,10 @@ static void spawnEnemy(SDL_Texture *ellenseg, Peldany *jatekos, Palya *palya) {
                 x = rand() % 1280;
                 y = 720 + 100;
                 break;
-        }
+        }*/
+
+        x = rand() % 1000 + 100;
+        y = rand() % 500 + 100;
 
         //printf("%d %d ", x, y);
         ellensegHozzaad(x, y, jatekos, ellenseg, palya);
@@ -281,10 +328,34 @@ static void spawnEnemy(SDL_Texture *ellenseg, Peldany *jatekos, Palya *palya) {
     }
 }
 
+void powerupFrissites(PowerUp *powerup) {
+    PowerUp *p;
+    PowerUp *lemarado = NULL;
 
-void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture, SDL_Texture *ellenseg, Lovedek **lovedek) {
+    for (p = powerup ; p != NULL ; p = p->kov) {
+        p->elet = MAX(p->elet - 1, 0);
+    }
+
+    p = powerup;
+    while (p != NULL && p->elet != 0) {
+        lemarado = p;
+        p = p->kov;
+    }
+    if (p == NULL) {
+        return;
+    }
+    else {
+        lemarado->kov = p->kov;
+        free(p);
+    }
+}
+
+void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture, SDL_Texture *ellenseg, SDL_Texture *elet, Lovedek **lovedek, PowerUp **powerup) {
     jatekosFrissites(jatekos, jatek, palya, texture, lovedek);
-    peldanyFrissites(jatekos, palya);
+    peldanyFrissites(jatekos, palya, elet, powerup);
     lovedekFrissites(lovedek, jatekos);
-    spawnEnemy(ellenseg, jatekos, palya);
+
+    powerupFrissites(*powerup);
+
+    spawnEllenseg(ellenseg, jatekos, palya);
 }

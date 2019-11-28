@@ -36,7 +36,7 @@ SDL_Texture* loadImage(SDL_Renderer *renderer, char path[]) {
         SDL_Log("Nem nyithato meg a kepfajl: %s", IMG_GetError());
         return NULL;
     }
-    //else SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Kep betoltese %s ...", path);
+    else SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Kep betoltese %s ...", path);
 
     return kep;
 }

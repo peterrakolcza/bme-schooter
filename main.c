@@ -14,8 +14,8 @@
 #include "jatekmenet.h"
 #include "rajzolas.h"
 
-static void capFrameRate(long *then, float *remainder)
-{
+static void capFrameRate(long *then, float *remainder) {
+    //FPS 9ms
     long wait = 16 + *remainder;
     *remainder -= (int)*remainder;
     long frameTime = SDL_GetTicks() - *then;
@@ -46,7 +46,9 @@ int main(int argc, char *argv[]) {
 
     SDL_Texture *lovedekTexture = loadImage(renderer, "gfx/bullet2.png");
     SDL_Texture *celzo = loadImage(renderer, "gfx/targetter.png");
+    SDL_Texture *grid = loadImage(renderer, "gfx/tile.png");
     TTF_Font *font = initTTF("gfx/LiberationSerif-Regular.ttf", 32);
+    SDL_Texture *hatter = loadImage(renderer, "gfx/background.png");
 
     /*Peldany *e;
     int db = 0;
@@ -105,7 +107,7 @@ int main(int argc, char *argv[]) {
 
         jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, &lovedek);
 
-        rajz(celzo, &jatek, jatekos, lovedek, &palya, renderer, font);
+        rajz(celzo, grid, hatter, &jatek, jatekos, lovedek, &palya, renderer, font);
 
         kepernyo(renderer);
 

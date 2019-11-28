@@ -4,8 +4,7 @@
 
 #include "rajzolas.h"
 
-void blit(SDL_Texture *texture, int x, int y, int center, SDL_Renderer *renderer)
-{
+void blit(SDL_Texture *texture, int x, int y, int center, SDL_Renderer *renderer) {
     SDL_Rect dest;
 
     dest.x = x;
@@ -57,34 +56,48 @@ void HUDrajzolas(SDL_Renderer *renderer, TTF_Font *font, Peldany *jatekos, Palya
     char mit[4];
 
     sprintf(mit, "%d", jatekos->elet);
-    szovegRajzolas(renderer, font, 10, 10, "Élet: ", 255, 255, 255);
-    szovegRajzolas(renderer, font, 110, 10, mit, 255, 255, 255);
+    szovegRajzolas(renderer, font, 20, 10, "Élet: ", 255, 255, 255);
+    szovegRajzolas(renderer, font, 120, 10, mit, 255, 255, 255);
 
     //sprintf(elet, "%d", jatekos->elet);
-    szovegRajzolas(renderer, font, 330, 10, "Pont: ", 255, 255, 255);
-    szovegRajzolas(renderer, font, 430, 10, "0", 255, 255, 255);
+    szovegRajzolas(renderer, font, 340, 10, "Pont: ", 255, 255, 255);
+    szovegRajzolas(renderer, font, 440, 10, "0", 255, 255, 255);
 
     if (jatekos->fegyver == Pisztoly) {
         sprintf(mit, "%d", palya->tolteny[0]);
-        szovegRajzolas(renderer, font, 650, 10, "Pisztoly: ", 255, 0, 0);
-        szovegRajzolas(renderer, font, 800, 10, mit, 255, 0, 0);
+        szovegRajzolas(renderer, font, 660, 10, "Pisztoly: ", 255, 0, 0);
+        szovegRajzolas(renderer, font, 810, 10, mit, 255, 0, 0);
 
         sprintf(mit, "%d", palya->tolteny[1]);
-        szovegRajzolas(renderer, font, 970, 10, "Gépfegyver: ", 255, 255, 255);
-        szovegRajzolas(renderer, font, 1170, 10, mit, 255, 255, 255);
+        szovegRajzolas(renderer, font, 980, 10, "Gépfegyver: ", 255, 255, 255);
+        szovegRajzolas(renderer, font, 1180, 10, mit, 255, 255, 255);
     }
     else {
         sprintf(mit, "%d", palya->tolteny[0]);
-        szovegRajzolas(renderer, font, 650, 10, "Pisztoly: ", 255, 255, 255);
-        szovegRajzolas(renderer, font, 800, 10, mit, 255, 255, 255);
+        szovegRajzolas(renderer, font, 660, 10, "Pisztoly: ", 255, 255, 255);
+        szovegRajzolas(renderer, font, 810, 10, mit, 255, 255, 255);
 
         sprintf(mit, "%d", palya->tolteny[1]);
-        szovegRajzolas(renderer, font, 970, 10, "Gépfegyver: ", 255, 0, 0);
-        szovegRajzolas(renderer, font, 1170, 10, mit, 255, 0, 0);
+        szovegRajzolas(renderer, font, 980, 10, "Gépfegyver: ", 255, 0, 0);
+        szovegRajzolas(renderer, font, 1180, 10, mit, 255, 0, 0);
     }
 }
 
-void rajz(SDL_Texture *celzo, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, Palya *palya, SDL_Renderer *renderer, TTF_Font *font) {
+void mintazat(SDL_Texture *grid, SDL_Renderer *renderer)
+{
+    int x, y;
+    for (y = 0 ; y < 720 ; y += 64) {
+        for (x = 0 ; x < 1280 ; x += 64) {
+            blit(grid, x, y, 0, renderer);
+        }
+    }
+}
+
+void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, Palya *palya, SDL_Renderer *renderer, TTF_Font *font) {
+
+    mintazat(grid, renderer);
+    blit(hatter, 0, 0, 0, renderer);
+
     blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
 
     Peldany *e;

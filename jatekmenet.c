@@ -36,7 +36,7 @@ void calcSlope(int x1, int y1, int x2, int y2, float *dx, float *dy) {
 
 
 
-static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek, Jatek *jatek) {
+void loves(Peldany *peldany, SDL_Texture *texture, Lovedek **lovedek, Jatek *jatek, Peldany *jatekos) {
     Lovedek *l;
 
     l = malloc(sizeof(Lovedek));
@@ -52,25 +52,30 @@ static void loves(Peldany *jatekos, SDL_Texture *texture, Lovedek **lovedek, Jat
     }
     l->kov = NULL;
 
-    l->x = jatekos->x;
-    l->y = jatekos->y;
-    l->oldal = jatekos->oldal;
-    l->hatokor = jatekos->hatokor;
+    l->x = peldany->x;
+    l->y = peldany->y;
+    l->oldal = peldany->oldal;
+    l->hatokor = peldany->hatokor;
     l->texture = texture;
     l->elet = 120;
-    l->szog = jatekos->szog;
+    l->szog = peldany->szog;
 
-    calcSlope(jatek->eger.x, jatek->eger.y, l->x, l->y, &l->dx, &l->dy);
+    if (peldany == jatekos) {
+        calcSlope(jatek->eger.x, jatek->eger.y, l->x, l->y, &l->dx, &l->dy);
+        if (jatekos->fegyver == GepFegyver)
+            jatekos->ujratoltIdo = 4;
+        else jatekos->ujratoltIdo = 16;
+    }
+    else {
+        peldany->ujratoltIdo = 100;
+        calcSlope(jatekos->x, jatekos->y, peldany->x, peldany->y, &l->dx, &l->dy);
+    }
 
     l->dx *= 16;
     l->dy *= 16;
-
-    if (jatekos->fegyver == GepFegyver)
-        jatekos->ujratoltIdo = 4;
-    else jatekos->ujratoltIdo = 16;
 }
 
-void powerupLetrehoz(int x, int y, PowerUp **powerup, SDL_Texture *texture) {
+void powerupLetrehoz(int x, int y, PowerUp **powerup, SDL_Texture *texture, int tipus) {
     PowerUp *e;
     e = malloc(sizeof(PowerUp));
     memset(e, 0, sizeof(PowerUp));
@@ -78,8 +83,9 @@ void powerupLetrehoz(int x, int y, PowerUp **powerup, SDL_Texture *texture) {
     e->x = x;
     e->y = y;
     e->elet = 60 * 5;
-    e->hatokor = 16;
+    e->hatokor = 32;
     e->oldal = 2;
+    e->tipus = tipus;
 
     e->dx = -200 + (rand() % 400);
     e->dy = -200 + (rand() % 400);
@@ -105,10 +111,10 @@ void hozzaadRandomPowerup(int x, int y, PowerUp **powerup, SDL_Texture *elet, SD
     veletlen = rand() % 5;
 
     if (veletlen == 0) {
-        powerupLetrehoz(x, y, powerup, elet);
+        powerupLetrehoz(x, y, powerup, elet, 0);
     }
     else if (veletlen == 1) {
-        powerupLetrehoz(x, y, powerup, tolteny);
+        powerupLetrehoz(x, y, powerup, tolteny, 1);
     }
 }
 
@@ -124,10 +130,10 @@ void halal(Palya *palya, Peldany *e, PowerUp **powerup, SDL_Texture *elet, SDL_T
 void tick(Peldany* peldany, Peldany *jatekos) {
     peldany->szog = szog(peldany->x, peldany->y, jatekos->x, jatekos->y);
 
-    calcSlope(jatekos->x, jatekos->y, jatekos->x, jatekos->y, &peldany->dx, &peldany->dy);
+    calcSlope(jatekos->x, jatekos->y, peldany->x, peldany->y, &peldany->dx, &peldany->dy);
 }
 
-void peldanyFrissites(Peldany *jatekos, Palya *palya, SDL_Texture *elet, SDL_Texture *tolteny, PowerUp **powerup) {
+void peldanyFrissites(Peldany *jatekos, Palya *palya, SDL_Texture *elet, SDL_Texture *tolteny, SDL_Texture *golyo, PowerUp **powerup, Lovedek **lovedek, Jatek *jatek) {
     Peldany *p;
     Peldany *lemarado = NULL;
 
@@ -144,6 +150,13 @@ void peldanyFrissites(Peldany *jatekos, Palya *palya, SDL_Texture *elet, SDL_Tex
 
         if (p != jatekos) {
             tick(p, jatekos);
+            int tavolsag = getDistance(p->x, p->y, jatekos->x, jatekos->y);
+            if (tavolsag < 300) {
+                p->dx = 0;
+                p->dy = 0;
+                if (p->ujratoltIdo == 0)
+                    loves(p, golyo, lovedek, jatek, jatekos);
+            }
         }
 
     }
@@ -166,8 +179,8 @@ void peldanyFrissites(Peldany *jatekos, Palya *palya, SDL_Texture *elet, SDL_Tex
 }
 
 void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture, Lovedek **lovedek) {
-    jatekos->dx = 0; //reset
-    jatekos->dy = 0;
+    jatekos->dx *= 0.8; //reset
+    jatekos->dy *= 0.8;
 
     if (jatek->billentyuzet[SDL_SCANCODE_W]) {
         jatekos->dy = -5;
@@ -188,7 +201,7 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture 
     jatekos->szog = szog(jatekos->x, jatekos->y, jatek->eger.x, jatek->eger.y);
 
     if (jatekos->ujratoltIdo == 0 && palya->tolteny[jatekos->fegyver] > 0 && jatek->eger.gomb[SDL_BUTTON_LEFT] && (jatek->eger.x != jatekos->x && jatek->eger.y != jatekos->y)) {
-        loves(jatekos, texture, lovedek, jatek);
+        loves(jatekos, texture, lovedek, jatek, jatekos);
         /*for (int i = 0; i < 6; ++i) {
             printf("%d ", jatek->eger.gomb[i]);
         }*/
@@ -289,7 +302,7 @@ void spawnEllenseg(SDL_Texture *ellenseg, Peldany *jatekos, Palya *palya) {
     int x, y;
 
     if (--palya->spawnIdozito <= 0) {
-        /*switch (rand() % 4) {
+        switch (rand() % 4) {
             case 0:
                 x = -100;
                 y = rand() % 720;
@@ -309,24 +322,34 @@ void spawnEllenseg(SDL_Texture *ellenseg, Peldany *jatekos, Palya *palya) {
                 x = rand() % 1280;
                 y = 720 + 100;
                 break;
-        }*/
+        }
 
-        x = rand() % 1000 + 100;
-        y = rand() % 500 + 100;
+        //x = rand() % 1000 + 100;
+        //y = rand() % 500 + 100;
 
-        //printf("%d %d ", x, y);
         ellensegHozzaad(x, y, jatekos, ellenseg, palya);
 
         palya->spawnIdozito = 60 + (rand() % 60);
     }
 }
 
-void powerupFrissites(PowerUp **powerup) {
+void powerupFrissites(PowerUp **powerup, Peldany *jatekos, Palya *palya) {
     PowerUp *p;
     PowerUp *lemarado = NULL;
 
+    int tavolsag;
+
     for (p = *powerup ; p != NULL ; p = p->kov) {
         p->elet--;
+
+        tavolsag = getDistance(p->x, p->y, jatekos->x, jatekos->y);
+        if (tavolsag < p->hatokor + jatekos->hatokor) {
+            p->elet = 0;
+
+            if (p->tipus == 0 && jatekos->elet < 5)
+                jatekos->elet += 1;
+            else palya->tolteny[1] += 50;
+        }
     }
 
     p = *powerup;
@@ -348,12 +371,12 @@ void powerupFrissites(PowerUp **powerup) {
     }
 }
 
-void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture, SDL_Texture *ellenseg, SDL_Texture *elet, SDL_Texture *tolteny, Lovedek **lovedek, PowerUp **powerup) {
-    jatekosFrissites(jatekos, jatek, palya, texture, lovedek);
-    peldanyFrissites(jatekos, palya, elet, tolteny, powerup);
+void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *golyo, SDL_Texture *ellenseg, SDL_Texture *elet, SDL_Texture *tolteny, Lovedek **lovedek, PowerUp **powerup) {
+    jatekosFrissites(jatekos, jatek, palya, golyo, lovedek);
+    peldanyFrissites(jatekos, palya, elet, tolteny, golyo, powerup, lovedek, jatek);
     lovedekFrissites(lovedek, jatekos);
 
-    powerupFrissites(powerup);
+    powerupFrissites(powerup, jatekos, palya);
 
     spawnEllenseg(ellenseg, jatekos, palya);
 }

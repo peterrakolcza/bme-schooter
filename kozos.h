@@ -66,6 +66,8 @@ typedef struct PowerUp {
     int h;
     float dx;
     float dy;
+    //0 az elet, 1 a tolteny
+    int tipus;
     int elet;
     //0 barát, 1 ellenség, 2 semmi
     int oldal;

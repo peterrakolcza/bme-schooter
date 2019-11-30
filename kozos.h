@@ -98,5 +98,10 @@ typedef struct Jatek {
     char beSzoveg[1000];
 } Jatek;
 
+typedef struct Eredmenyek {
+    char nev[51];
+    int pontSzam;
+} Eredmenyek;
+
 
 #endif //BME_SCHOOTER_KOZOS_H

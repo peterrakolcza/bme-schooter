@@ -13,9 +13,9 @@
 #include "bemenet.h"
 #include "jatekmenet.h"
 #include "rajzolas.h"
+#include "eredmenyek.h"
 
 static void capFrameRate(long *then, float *remainder) {
-    //FPS 9ms
     long wait = 16 + *remainder;
     *remainder -= (int)*remainder;
     long frameTime = SDL_GetTicks() - *then;
@@ -54,6 +54,13 @@ int main(int argc, char *argv[]) {
     SDL_Texture *ellenseg = loadImage(renderer, "gfx/enemy01.png");
     SDL_Texture *elet = loadImage(renderer, "gfx/health.png");
     SDL_Texture *tolteny = loadImage(renderer, "gfx/uzi.png");
+    SDL_Texture *fokepernyoTexture = loadImage(renderer, "gfx/fokepernyo1.png");
+    Eredmenyek legjobb[10];
+
+    beolvasas(legjobb);
+    for (int i = 0; i < 10; ++i) {
+        printf("%s %d ", legjobb[i].nev, legjobb[i].pontSzam);
+    }
 
     /*Peldany *e;
     int db = 0;
@@ -66,6 +73,9 @@ int main(int argc, char *argv[]) {
     long most = SDL_GetTicks();
     float maradt = 0;
 
+    bool start = false;
+    bool topPontok = false;
+
     /* varunk a kilepesre */
     while (true) {
         felkeszites(renderer);
@@ -76,7 +86,7 @@ int main(int argc, char *argv[]) {
         while (SDL_PollEvent(&esemeny)) {
             switch (esemeny.type) {
                 case SDL_QUIT:
-                    felszabaditas(jatekos, lovedek, powerup);
+                    felszabaditas(&jatekos, &lovedek, &powerup);
                     /* ablak bezarasa */
                     torles(renderer, window);
                     exit(0);
@@ -96,6 +106,8 @@ int main(int argc, char *argv[]) {
 
                 case SDL_MOUSEBUTTONUP:
                     gombFel(&esemeny.button, &jatek);
+                    start = true;
+                    topPontok = false;
                     break;
 
                 case SDL_MOUSEWHEEL:
@@ -106,13 +118,26 @@ int main(int argc, char *argv[]) {
                     break;
             }
         }
-
         SDL_GetMouseState(&jatek.eger.x, &jatek.eger.y);
-        //printf("%d %d", jatek->eger.x, jatek->eger.y);
 
-        jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, ellenseg, elet, tolteny, &lovedek, &powerup);
+        if (jatekos->elet == 0) {
+            topPontok = true;
+            start = false;
+            felszabaditas(&jatekos, &lovedek, &powerup);
+            initPalya(renderer, &jatekos, &palya, &jatek);
+        }
 
-        rajz(celzo, grid, hatter, &jatek, jatekos, lovedek, powerup, &palya, renderer, font);
+        if (topPontok) {
+            legjobbEredmenyekKepernyo(renderer, font, celzo, &jatek, fokepernyoTexture, grid);
+        }
+        else if (start) {
+            //printf("%d %d", jatek->eger.x, jatek->eger.y);
+
+            jatekFrissites(jatekos, &jatek, &palya, lovedekTexture, ellenseg, elet, tolteny, &lovedek, &powerup);
+
+            rajz(celzo, grid, hatter, &jatek, jatekos, lovedek, powerup, &palya, renderer, font);
+        }
+        else fokepernyo(renderer, font, celzo, &jatek, fokepernyoTexture, grid);
 
         kepernyo(renderer);
 

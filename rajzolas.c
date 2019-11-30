@@ -117,3 +117,17 @@ void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jat
 
     HUDrajzolas(renderer, font, jatekos, palya);
 }
+
+void fokepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *celzo, Jatek *jatek, SDL_Texture *fokepernyoTexture, SDL_Texture *grid) {
+    mintazat(grid, renderer);
+    blit(fokepernyoTexture, 0, 0, 0, renderer);
+    szovegRajzolas(renderer, font, 340, 500, "Nyomja le az egyik egérgombot a kezdéshez!", 255, 255, 255);
+    blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
+}
+
+void legjobbEredmenyekKepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *celzo, Jatek *jatek, SDL_Texture *fokepernyoTexture, SDL_Texture *grid) {
+    //mintazat(grid, renderer);
+    blit(fokepernyoTexture, 0, 0, 0, renderer);
+    szovegRajzolas(renderer, font, 340, 500, "Nyomja le az egyik egérgombot a kezdéshez!", 255, 255, 255);
+    blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
+}

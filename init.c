@@ -51,12 +51,13 @@ void kepernyo(SDL_Renderer *renderer) {
 }
 
 void torles(SDL_Renderer *renderer, SDL_Window *window) {
-    printf("TORLESSSSSS");
     SDL_DestroyRenderer(renderer);
 
     SDL_DestroyWindow(window);
 
     SDL_Quit();
+
+    printf("Minden fel lett szabaditva!");
 }
 
 void initJatekos(Peldany **jatekos, SDL_Renderer *renderer, Palya *palya)
@@ -107,27 +108,30 @@ TTF_Font* initTTF(char path[], int meret) {
     return font;
 }
 
-void felszabaditas(Peldany *jatekos, Lovedek *lovedek, PowerUp *powerup) {
-    Peldany *e = jatekos;
+void felszabaditas(Peldany **jatekos, Lovedek **lovedek, PowerUp **powerup) {
+    Peldany *e = *jatekos;
     while (e != NULL) {
         Peldany *temp = e->kov;
         free(e);
         e = temp;
     }
+    *jatekos = NULL;
 
-    Lovedek *e2 = lovedek;
+    Lovedek *e2 = *lovedek;
     while (e2 != NULL) {
         Lovedek *temp = e2->kov;
         free(e2);
         e2 = temp;
     }
+    *lovedek = NULL;
 
-    PowerUp *e3 = powerup;
+    PowerUp *e3 = *powerup;
     while (e3 != NULL) {
         PowerUp *temp = e3->kov;
         free(e3);
         e3 = temp;
     }
+    *powerup = NULL;
 }
 
 

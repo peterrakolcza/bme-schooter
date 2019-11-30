@@ -13,7 +13,7 @@ void felkeszites(SDL_Renderer *renderer);
 void kepernyo(SDL_Renderer *renderer);
 void torles(SDL_Renderer *renderer, SDL_Window *window);
 void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya, Jatek *jatek);
-void felszabaditas(Peldany *jatekos, Lovedek *lovedek, PowerUp *powerUp);
+void felszabaditas(Peldany **jatekos, Lovedek **lovedek, PowerUp **powerUp);
 TTF_Font* initTTF(char path[], int meret);
 
 #endif //BME_SCHOOTER_INIT_H

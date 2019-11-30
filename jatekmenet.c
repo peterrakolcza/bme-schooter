@@ -171,6 +171,9 @@ void peldanyFrissites(Peldany *jatekos, Palya *palya, SDL_Texture *elet, SDL_Tex
     if (p == NULL) {
         return;
     }
+    else if (p == jatekos && p->elet == 0) {
+        return;
+    }
     else {
         lemarado->kov = p->kov;
         halal(palya, p, powerup, elet, tolteny);

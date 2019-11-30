@@ -8,5 +8,7 @@
 #include "kozos.h"
 
 void beolvasas(Eredmenyek tomb[]);
+void kiiras(Eredmenyek tomb[]);
+void feluliras(Eredmenyek tomb[], int pontszam, char nev[]);
 
 #endif //BME_SCHOOTER_EREDMENYEK_H

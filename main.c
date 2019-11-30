@@ -61,6 +61,8 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < 10; ++i) {
         printf("%s %d ", legjobb[i].nev, legjobb[i].pontSzam);
     }
+    strcpy(legjobb[0].nev, "Anyaaad");
+    legjobb[0].pontSzam = 400;
 
     /*Peldany *e;
     int db = 0;
@@ -86,6 +88,7 @@ int main(int argc, char *argv[]) {
         while (SDL_PollEvent(&esemeny)) {
             switch (esemeny.type) {
                 case SDL_QUIT:
+                    kiiras(legjobb);
                     felszabaditas(&jatekos, &lovedek, &powerup);
                     /* ablak bezarasa */
                     torles(renderer, window);
@@ -123,6 +126,7 @@ int main(int argc, char *argv[]) {
         if (jatekos->elet == 0) {
             topPontok = true;
             start = false;
+            feluliras(legjobb, palya.pont, "Kakkaa");
             felszabaditas(&jatekos, &lovedek, &powerup);
             initPalya(renderer, &jatekos, &palya, &jatek);
         }

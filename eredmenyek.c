@@ -75,5 +75,23 @@ bool televanE(Eredmenyek tomb[]) {
 }
 
 void feluliras(Eredmenyek tomb[], int pontszam, char nev[]) {
+    int index = 0;
 
+    if (pontszam == 0)
+        return;
+
+    int i = 0;
+    while (tomb[i].nev[0] != '\0' && i < 10) {
+        if (pontszam > tomb[i].pontSzam)
+            index = i;
+        i++;
+    }
+
+    if (i == 10)
+        return;
+
+    if (tomb[i].nev[0] == '\0') {
+        strcpy(tomb[i].nev, nev);
+        tomb[i].pontSzam = pontszam;
+    }
 }

@@ -95,11 +95,11 @@ typedef struct Lovedek {
 typedef struct Jatek {
     Eger eger;
     int billentyuzet[400];
-    char beSzoveg[1000];
+    char beSzoveg[42];
 } Jatek;
 
 typedef struct Eredmenyek {
-    char nev[51];
+    char nev[42];
     int pontSzam;
 } Eredmenyek;
 

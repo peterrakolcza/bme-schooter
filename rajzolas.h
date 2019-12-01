@@ -9,6 +9,7 @@
 
 void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, PowerUp *powerup, Palya *palya, SDL_Renderer *renderer, TTF_Font *font);
 void fokepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *celzo, Jatek *jatek, SDL_Texture *fokepernyoTexture, SDL_Texture *grid);
-void legjobbEredmenyekKepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *celzo, Jatek *jatek, SDL_Texture *fokepernyoTexture, SDL_Texture *grid);
+void legjobbEredmenyekKepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *celzo, Jatek *jatek, SDL_Texture *fokepernyoTexture, SDL_Texture *grid, Eredmenyek tomb[]);
+void legjobbNev(SDL_Renderer *renderer, TTF_Font *font, char nev[]);
 
 #endif //BME_SCHOOTER_RAJZOLAS_H

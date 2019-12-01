@@ -10,7 +10,7 @@ void beolvasas(Eredmenyek tomb[]) {
     f = fopen("legjobberedmenyek.txt", "r");
 
     if (f != NULL) {
-        char sor[51];
+        char sor[42];
         int pont;
         char line[60];
         int i = 0;
@@ -45,7 +45,7 @@ void kiiras(Eredmenyek tomb[]) {
 
     if (f != NULL) {
         int i = 0;
-        while (tomb[i].nev[0] != '\0') {
+        while (tomb[i].nev[0] != '\0' && i < 10) {
             fprintf(f, "%s %d", tomb[i].nev, tomb[i].pontSzam);
             fprintf(f,"\n");
             i++;
@@ -57,7 +57,7 @@ void kiiras(Eredmenyek tomb[]) {
         f = fopen("legjobberedmenyek.txt", "w");
 
         int i = 0;
-        while (tomb[i].nev[0] != '\0') {
+        while (tomb[i].nev[0] != '\0' && i < 10) {
             fprintf(f, "%s %d", tomb[i].nev, tomb[i].pontSzam);
             i++;
         }
@@ -66,32 +66,37 @@ void kiiras(Eredmenyek tomb[]) {
     }
 }
 
-bool televanE(Eredmenyek tomb[]) {
-    for (int i = 0; i < 10; ++i) {
-        if (tomb[i].nev[0] == '\0')
-            return false;
-    }
-    return true;
-}
-
-void feluliras(Eredmenyek tomb[], int pontszam, char nev[]) {
-    int index = 0;
-
-    if (pontszam == 0)
-        return;
-
-    int i = 0;
-    while (tomb[i].nev[0] != '\0' && i < 10) {
-        if (pontszam > tomb[i].pontSzam)
-            index = i;
-        i++;
-    }
-
-    if (i == 10)
-        return;
-
-    if (tomb[i].nev[0] == '\0') {
+void feluliras(Eredmenyek tomb[], int pontszam, char nev[], int i, int index) {
+    if (index == -1 && tomb[i].nev[0] == '\0') {
         strcpy(tomb[i].nev, nev);
         tomb[i].pontSzam = pontszam;
+    }
+    else {
+        for (int j = 8; j >= index; j--) {
+            tomb[j+1] = tomb[j];
+        }
+
+        strcpy(tomb[index].nev, nev);
+        tomb[index].pontSzam = pontszam;
+    }
+}
+
+void szovegBeirasa(Jatek *jatek, bool *vege) {
+    int hossz = strlen(jatek->beSzoveg);
+
+    for (int i = 0 ; i < strlen(jatek->beSzoveg) ; i++)
+    {
+        jatek->beSzoveg[i] = toupper(jatek->beSzoveg[i]);
+    }
+
+    if (hossz > 0 && jatek->billentyuzet[SDL_SCANCODE_BACKSPACE])
+    {
+        jatek->beSzoveg[--hossz] = '\0';
+
+        jatek->billentyuzet[SDL_SCANCODE_BACKSPACE] = 0;
+    }
+
+    if (jatek->billentyuzet[SDL_SCANCODE_RETURN] && strlen(jatek->beSzoveg) != 0) {
+        *vege = true;
     }
 }

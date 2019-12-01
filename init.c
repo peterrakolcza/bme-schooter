@@ -86,6 +86,7 @@ void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya, Jatek *j
 
     palya->pont = 0;
     palya->spawnIdozito = 0;
+    jatek->beSzoveg[0] = '\0';
 
 
     for (int i = 0; i < 6; ++i) {

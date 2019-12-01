@@ -125,9 +125,31 @@ void fokepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *celzo, Jate
     blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
 }
 
-void legjobbEredmenyekKepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *celzo, Jatek *jatek, SDL_Texture *fokepernyoTexture, SDL_Texture *grid) {
+void legjobbEredmenyekKepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *celzo, Jatek *jatek, SDL_Texture *fokepernyoTexture, SDL_Texture *grid, Eredmenyek tomb[]) {
     //mintazat(grid, renderer);
-    blit(fokepernyoTexture, 0, 0, 0, renderer);
-    szovegRajzolas(renderer, font, 340, 500, "Nyomja le az egyik egérgombot a kezdéshez!", 255, 255, 255);
+    blit(fokepernyoTexture, 0, -130, 0, renderer);
+
+    for (int i = 0; i < 10; ++i) {
+        char mit[4];
+        sprintf(mit, "%d", tomb[i].pontSzam);
+        if (tomb[i].nev[0] != '\0') {
+            szovegRajzolas(renderer, font, 300, 150 + i * 50, tomb[i].nev, 255, 255, 255);
+            szovegRajzolas(renderer, font, 900, 150 + i * 50, mit, 255, 255, 255);
+        }
+        else {
+            szovegRajzolas(renderer, font, 300, 150 + i * 50, "ANONYMUS", 255, 255, 255);
+            szovegRajzolas(renderer, font, 900, 150 + i * 50, "0", 255, 255, 255);
+        }
+    }
+
+    szovegRajzolas(renderer, font, 340, 650, "Nyomja le az egyik egérgombot a kezdéshez!", 255, 255, 255);
     blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
+}
+
+void legjobbNev(SDL_Renderer *renderer, TTF_Font *font, char nev[]) {
+    szovegRajzolas(renderer, font, 400, 200, "Gratulálunk, felkerült a dicsőséglistára!", 255, 255, 255);
+    szovegRajzolas(renderer, font, 400, 250, "Kezdjen el gépelni... Ne használjon space-t!", 255, 255, 255);
+    szovegRajzolas(renderer, font, 400, 300, "Nyomjon egy ENTER-t, ha elkészült!", 255, 255, 255);
+    if(nev[0] != '\0')
+        szovegRajzolas(renderer, font, 400, 500, nev, 255, 0, 0);
 }

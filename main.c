@@ -61,8 +61,6 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < 10; ++i) {
         printf("%s %d ", legjobb[i].nev, legjobb[i].pontSzam);
     }
-    strcpy(legjobb[0].nev, "Anyaaad");
-    legjobb[0].pontSzam = 400;
 
     /*Peldany *e;
     int db = 0;
@@ -77,6 +75,7 @@ int main(int argc, char *argv[]) {
 
     bool start = false;
     bool topPontok = false;
+    bool bevanIrva = false;
 
     /* varunk a kilepesre */
     while (true) {
@@ -124,15 +123,64 @@ int main(int argc, char *argv[]) {
         SDL_GetMouseState(&jatek.eger.x, &jatek.eger.y);
 
         if (jatekos->elet == 0) {
+            if (palya.pont == 0)
+                bevanIrva = true;
+
+            int index = -1;
+            int i = 0;
+            while (legjobb[i].nev[0] != '\0' && i < 10) {
+                if (palya.pont > legjobb[i].pontSzam) {
+                    index = i;
+                    break;
+                }
+                i++;
+            }
+
+            if (i == 10 && index == -1)
+                bevanIrva = true;
+
+            while (!bevanIrva) {
+                SDL_Event ev;
+
+                while (SDL_PollEvent(&ev)) {
+                    switch (ev.type) {
+                        case SDL_KEYDOWN:
+                            lenyomva(&ev.key, &jatek);
+                            break;
+
+                        case SDL_KEYUP:
+                            elengedve(&ev.key, &jatek);
+                            break;
+
+                        case SDL_TEXTINPUT:
+                            if (strlen(jatek.beSzoveg) <= 41)
+                                strcat(jatek.beSzoveg, ev.text.text);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
+                szovegBeirasa(&jatek, &bevanIrva);
+
+                felkeszites(renderer);
+                legjobbNev(renderer, font, jatek.beSzoveg);
+                kepernyo(renderer);
+            }
+            bevanIrva = false;
+
+            if(!((i == 10 && index == -1) || palya.pont == 0))
+                feluliras(legjobb, palya.pont, jatek.beSzoveg, i, index);
+
             topPontok = true;
             start = false;
-            feluliras(legjobb, palya.pont, "Kakkaa");
             felszabaditas(&jatekos, &lovedek, &powerup);
             initPalya(renderer, &jatekos, &palya, &jatek);
         }
 
         if (topPontok) {
-            legjobbEredmenyekKepernyo(renderer, font, celzo, &jatek, fokepernyoTexture, grid);
+            legjobbEredmenyekKepernyo(renderer, font, celzo, &jatek, fokepernyoTexture, grid, legjobb);
         }
         else if (start) {
             //printf("%d %d", jatek->eger.x, jatek->eger.y);

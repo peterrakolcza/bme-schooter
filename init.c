@@ -4,6 +4,7 @@
 
 #include "init.h"
 
+/** A renderer és az ablak létrehozása. Error kiírása konzolra hiba esetén. */
 void init(SDL_Renderer **renderer1, SDL_Window **window1) {
     /* SDL inicializálása és ablak megnyitása */
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -29,6 +30,7 @@ void init(SDL_Renderer **renderer1, SDL_Window **window1) {
 
 }
 
+/** Ez a függvény a képek, mint textúra beolvasásáért felelős. */
 SDL_Texture* loadImage(SDL_Renderer *renderer, char path[]) {
     /* kep betoltese */
     SDL_Texture *kep = IMG_LoadTexture(renderer, path);
@@ -41,15 +43,18 @@ SDL_Texture* loadImage(SDL_Renderer *renderer, char path[]) {
     return kep;
 }
 
+/** Beállítja a háttérszínt és felkészíti a renderer-t a rajzolásra. */
 void felkeszites(SDL_Renderer *renderer) {
     SDL_SetRenderDrawColor(renderer, 32, 32, 32, 255);
     SDL_RenderClear(renderer);
 }
 
+/** Frissíti a képernyőt az azóta kirajzolt elemekkel.*/
 void kepernyo(SDL_Renderer *renderer) {
     SDL_RenderPresent(renderer);
 }
 
+/** Megsemmísiti a renderer-t és bezárja az ablakot. */
 void torles(SDL_Renderer *renderer, SDL_Window *window) {
     SDL_DestroyRenderer(renderer);
 
@@ -60,6 +65,7 @@ void torles(SDL_Renderer *renderer, SDL_Window *window) {
     printf("Minden fel lett szabaditva!");
 }
 
+/** A játékos létrehozása, mint a láncolt lista első eleme. A játékos mindig a lista első eleme és az ellenségeket csak hozzáfűzi a játék. */
 void initJatekos(Peldany **jatekos, SDL_Renderer *renderer, Palya *palya)
 {
     *jatekos = malloc(sizeof(Peldany));
@@ -81,6 +87,7 @@ void initJatekos(Peldany **jatekos, SDL_Renderer *renderer, Palya *palya)
     SDL_QueryTexture((*jatekos)->texture, NULL, NULL, &(*jatekos)->w, &(*jatekos)->h);
 }
 
+/** Pálya inicializásása. Kinullázzuk a megfelelő adatokat, illetve beállítjuk a kezdő bemeneti adatokat 0-ra.*/
 void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya, Jatek *jatek) {
     initJatekos(jatekos, renderer, palya);
 
@@ -99,6 +106,7 @@ void initPalya(SDL_Renderer *renderer, Peldany **jatekos, Palya *palya, Jatek *j
     }
 }
 
+/** Font betöltése. */
 TTF_Font* initTTF(char path[], int meret) {
     TTF_Init();
     TTF_Font *font = TTF_OpenFont(path, meret);
@@ -109,6 +117,7 @@ TTF_Font* initTTF(char path[], int meret) {
     return font;
 }
 
+/** Az összes láncolt lista felszabadítása kilépés vagy halál esetén. */
 void felszabaditas(Peldany **jatekos, Lovedek **lovedek, PowerUp **powerup) {
     Peldany *e = *jatekos;
     while (e != NULL) {

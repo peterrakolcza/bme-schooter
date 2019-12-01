@@ -4,6 +4,7 @@
 
 #include "eredmenyek.h"
 
+/**A legjobb eredmények beolvasasa, ha létezik a szöveges dokumentum és olvasható. */
 void beolvasas(Eredmenyek tomb[]) {
 
     FILE *f;
@@ -38,6 +39,7 @@ void beolvasas(Eredmenyek tomb[]) {
     }
 }
 
+/**A legjobb eredmények kiírása fájlba. Ha létezik a fájl és olvasható, akkor azt felülírja, különben létrehoz egy újat. */
 void kiiras(Eredmenyek tomb[]) {
 
     FILE *f;
@@ -66,6 +68,7 @@ void kiiras(Eredmenyek tomb[]) {
     }
 }
 
+/**Minden játék végén frissíteni kell a legjobb eredmények tömböt, hogy kilépéskor már a frissült adatokat tudja fáljbaírni. */
 void feluliras(Eredmenyek tomb[], int pontszam, char nev[], int i, int index) {
     if (index == -1 && tomb[i].nev[0] == '\0') {
         strcpy(tomb[i].nev, nev);
@@ -81,16 +84,15 @@ void feluliras(Eredmenyek tomb[], int pontszam, char nev[], int i, int index) {
     }
 }
 
+/**Ha a játkosunk annyi ellenséget ölt, hogy felkerült a dicsőséglistára, akkor a nevének beírásáért ez a függvény felel. Ez a függvény frissíti a beírt szöveget és állítja be a végzett jelzést, ha ENTER-t nyomunk.*/
 void szovegBeirasa(Jatek *jatek, bool *vege) {
     int hossz = strlen(jatek->beSzoveg);
 
-    for (int i = 0 ; i < strlen(jatek->beSzoveg) ; i++)
-    {
+    for (int i = 0 ; i < strlen(jatek->beSzoveg) ; i++) {
         jatek->beSzoveg[i] = toupper(jatek->beSzoveg[i]);
     }
 
-    if (hossz > 0 && jatek->billentyuzet[SDL_SCANCODE_BACKSPACE])
-    {
+    if (hossz > 0 && jatek->billentyuzet[SDL_SCANCODE_BACKSPACE]) {
         jatek->beSzoveg[--hossz] = '\0';
 
         jatek->billentyuzet[SDL_SCANCODE_BACKSPACE] = 0;

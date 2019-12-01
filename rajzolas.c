@@ -4,6 +4,7 @@
 
 #include "rajzolas.h"
 
+/** Paraméterként megadott textúra rajzolása a képernyő X;Y koordinátájára. Nem tudja forgatni a képet. */
 void blit(SDL_Texture *texture, int x, int y, int center, SDL_Renderer *renderer) {
     SDL_Rect dest;
 
@@ -19,6 +20,7 @@ void blit(SDL_Texture *texture, int x, int y, int center, SDL_Renderer *renderer
     SDL_RenderCopy(renderer, texture, NULL, &dest);
 }
 
+/** Paraméterként megadott textúre rajzolása a képernyő X;Y koordinátájára x "angle" fokos szögben. */
 void blitRotated(SDL_Texture *texture, int x, int y, float angle, SDL_Renderer *renderer) {
     SDL_Rect dstRect;
 
@@ -31,6 +33,7 @@ void blitRotated(SDL_Texture *texture, int x, int y, float angle, SDL_Renderer *
     SDL_RenderCopyEx(renderer, texture, NULL, &dstRect, angle, NULL, SDL_FLIP_NONE);
 }
 
+/** Paraméterként megadott szöveget rajzol a képernyő X;Y koordinátájára. */
 void szovegRajzolas(SDL_Renderer *renderer, TTF_Font *font, int x, int y, char mit[], int R, int G, int B) {
     SDL_Surface *felirat;
     SDL_Texture *felirat_t;
@@ -52,6 +55,7 @@ void szovegRajzolas(SDL_Renderer *renderer, TTF_Font *font, int x, int y, char m
     SDL_DestroyTexture(felirat_t);
 }
 
+/** A játék szempontjából lényeges információkat rajzolja a képernyőre: élet, pontszám, megmaradt golyók száma az egyes fegyverekben.*/
 void HUDrajzolas(SDL_Renderer *renderer, TTF_Font *font, Peldany *jatekos, Palya *palya) {
     char mit[4];
 
@@ -83,6 +87,7 @@ void HUDrajzolas(SDL_Renderer *renderer, TTF_Font *font, Peldany *jatekos, Palya
     }
 }
 
+/** A hattár mintázatát rajzolja meg a paraméterként megadott textúrával.*/
 void mintazat(SDL_Texture *grid, SDL_Renderer *renderer)
 {
     int x, y;
@@ -93,6 +98,7 @@ void mintazat(SDL_Texture *grid, SDL_Renderer *renderer)
     }
 }
 
+/** Ez a "fő" rajzoló függvény, ami minden képckockát frissít a szükséges adatokkal és kirajzolja azt a képernyőre az előbbi függvényekkel.*/
 void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jatek, Peldany *jatekos, Lovedek *lovedek, PowerUp *powerup, Palya *palya, SDL_Renderer *renderer, TTF_Font *font) {
 
     mintazat(grid, renderer);
@@ -118,6 +124,7 @@ void rajz(SDL_Texture *celzo, SDL_Texture *grid, SDL_Texture *hatter, Jatek* jat
     HUDrajzolas(renderer, font, jatekos, palya);
 }
 
+/** A főképernyő komponenseit rajzolja ki.*/
 void fokepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *celzo, Jatek *jatek, SDL_Texture *fokepernyoTexture, SDL_Texture *grid) {
     mintazat(grid, renderer);
     blit(fokepernyoTexture, 0, 0, 0, renderer);
@@ -125,6 +132,7 @@ void fokepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *celzo, Jate
     blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
 }
 
+/** A top 10 eredményt rajzolja ki a dicsőséglistára. Ha nincs 10, kitölti adatokkal vizualizáció céljából.*/
 void legjobbEredmenyekKepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *celzo, Jatek *jatek, SDL_Texture *fokepernyoTexture, SDL_Texture *grid, Eredmenyek tomb[]) {
     //mintazat(grid, renderer);
     blit(fokepernyoTexture, 0, -130, 0, renderer);
@@ -146,6 +154,7 @@ void legjobbEredmenyekKepernyo(SDL_Renderer *renderer, TTF_Font *font, SDL_Textu
     blit(celzo, jatek->eger.x, jatek->eger.y, 1, renderer);
 }
 
+/** Ha a jaátékos felkerült a dicsőséglistára, akkor be kell írnia a nevét. Ez a függvény a beírt szöveget rajzolja a kijelzőre és az intrukciókat.*/
 void legjobbNev(SDL_Renderer *renderer, TTF_Font *font, char nev[]) {
     szovegRajzolas(renderer, font, 400, 200, "Gratulálunk, felkerült a dicsőséglistára!", 255, 255, 255);
     szovegRajzolas(renderer, font, 400, 250, "Kezdjen el gépelni... Ne használjon space-t!", 255, 255, 255);

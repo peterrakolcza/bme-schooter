@@ -4,6 +4,11 @@
 
 #include "jatekmenet.h"
 
+////////////////////////////////////////////////////////////////
+//////////////////////  Segédfüggvények
+////////////////////////////////////////////////////////////////
+
+/** Két pont közötti távolságot számolja ki Pithagorasz-tétellel és visszatér azzal.*/
 int getDistance(int x1, int y1, int x2, int y2) {
     int x, y;
 
@@ -13,11 +18,13 @@ int getDistance(int x1, int y1, int x2, int y2) {
     return sqrt(x * x + y *y);
 }
 
+/** Két pont által bezárt szöget számolja ki és visszatér azzal. */
 float szog(int x1, int y1, int x2, int y2) {
     float angle = -90 + atan2(y1 - y2, x1 - x2) * (180 / PI);
     return angle >= 0 ? angle : 360 + angle;
 }
 
+/** Kiszámolja, hogy maximum hány lépés szükséges, hogy elérjünk az egyik pontból a másikba, így frissítve a pédányok láncolt lista delta X;Y értékeit. */
 void calcSlope(int x1, int y1, int x2, int y2, float *dx, float *dy) {
     int steps = MAX(abs(x1 - x2), abs(y1 - y2));
 
@@ -33,9 +40,11 @@ void calcSlope(int x1, int y1, int x2, int y2, float *dx, float *dy) {
     *dy /= steps;
 }
 
+////////////////////////////////////////////////////////////////
+//////////////////////  Segédfüggvények vége
+////////////////////////////////////////////////////////////////
 
-
-
+/** Hozzáfűzi az újonnan kilőlt lövedékeket a láncolt listához és beállítja azok kezdőértékeit. Inicializálja a lövedékeket.*/
 void loves(Peldany *peldany, SDL_Texture *texture, Lovedek **lovedek, Jatek *jatek, Peldany *jatekos) {
     Lovedek *l;
 
@@ -75,6 +84,7 @@ void loves(Peldany *peldany, SDL_Texture *texture, Lovedek **lovedek, Jatek *jat
     l->dy *= 16;
 }
 
+/** Létrehoz egy ilyne "powerup" elemet és inicializálja azt. */
 void powerupLetrehoz(int x, int y, PowerUp **powerup, SDL_Texture *texture, int tipus) {
     PowerUp *e;
     e = malloc(sizeof(PowerUp));
@@ -105,6 +115,7 @@ void powerupLetrehoz(int x, int y, PowerUp **powerup, SDL_Texture *texture, int 
     e->texture = texture;
 }
 
+/** Randomszám generásával eldönti, hogy egy ellenség lelövése esetén dobjon-e el "powerup" elemet avagy ne.*/
 void hozzaadRandomPowerup(int x, int y, PowerUp **powerup, SDL_Texture *elet, SDL_Texture *tolteny) {
     int veletlen;
 
@@ -118,6 +129,7 @@ void hozzaadRandomPowerup(int x, int y, PowerUp **powerup, SDL_Texture *elet, SD
     }
 }
 
+/** Ellenség lelövése esetén növeli a pontszámot, illetve 50%-50% valószínűséggel meghívja a "powerup sorsoló" függvényt, így tovább randomizálja az esélyét, hogy "powerup" elem keletkezik.*/
 void halal(Palya *palya, Peldany *e, PowerUp **powerup, SDL_Texture *elet, SDL_Texture *tolteny) {
     if (rand() % 2 == 0) {
         hozzaadRandomPowerup(e->x, e->y, powerup, elet, tolteny);
@@ -126,13 +138,14 @@ void halal(Palya *palya, Peldany *e, PowerUp **powerup, SDL_Texture *elet, SDL_T
     palya->pont += 10;
 }
 
-
+/** Beállítja az ellenség célzási irányát a játékosra és elmozgatja abba az irányba.*/
 void tick(Peldany* peldany, Peldany *jatekos) {
     peldany->szog = szog(peldany->x, peldany->y, jatekos->x, jatekos->y);
 
     calcSlope(jatekos->x, jatekos->y, peldany->x, peldany->y, &peldany->dx, &peldany->dy);
 }
 
+/** Minden képkocka esetén frissíti a láncolt lista összes elemét, ezzel lehetővé téve a mozgatást, találat vizsgálatát és a "meghalt" ellenségek törlését.*/
 void peldanyFrissites(Peldany *jatekos, Palya *palya, SDL_Texture *elet, SDL_Texture *tolteny, SDL_Texture *golyo, PowerUp **powerup, Lovedek **lovedek, Jatek *jatek) {
     Peldany *p;
     Peldany *lemarado = NULL;
@@ -181,6 +194,7 @@ void peldanyFrissites(Peldany *jatekos, Palya *palya, SDL_Texture *elet, SDL_Tex
     }
 }
 
+/** Játékos bemeneteinek olvasása és annak megfelelő mozgatása. Ezenkívül a játékos célzási irányát frissíti az egér által mutatott pozícióra. Az egérgombot is olvassa a függvény és ennek megfelően vagy újratölt, lő vagy fegyvert vált.*/
 void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *texture, Lovedek **lovedek) {
     jatekos->dx *= 0.8; //reset
     jatekos->dy *= 0.8;
@@ -205,9 +219,6 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture 
 
     if (jatekos->ujratoltIdo == 0 && palya->tolteny[jatekos->fegyver] > 0 && jatek->eger.gomb[SDL_BUTTON_LEFT] && (jatek->eger.x != jatekos->x && jatek->eger.y != jatekos->y)) {
         loves(jatekos, texture, lovedek, jatek, jatekos);
-        /*for (int i = 0; i < 6; ++i) {
-            printf("%d ", jatek->eger.gomb[i]);
-        }*/
 
         palya->tolteny[jatekos->fegyver]--;
     }
@@ -230,6 +241,7 @@ void jatekosFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture 
     }
 }
 
+/** Adott lövedék pozíciójának és hatókörének összehasonlítása az összes példánnyal, így vizsgálva a találatot.*/
 void lovedekTalaltE(Lovedek *l, Peldany *jatekos) {
     Peldany *e;
     int tavolsag;
@@ -249,6 +261,7 @@ void lovedekTalaltE(Lovedek *l, Peldany *jatekos) {
     }
 }
 
+/** Frissíti a lövedékek láncolt listát. Mozgatja a lövedékeket a megfelelő irányba és sebességgel, illetve viszgálja, hogy az adott golyó eltalált-e valakit. FRIENDLYFIRE nincs! Ha egy golyó nem talált el senkit és "lejárt" az élettartama, akkor felszabadítja azt.*/
 void lovedekFrissites(Lovedek **lovedek, Peldany *jatekos) {
     Lovedek *l = *lovedek;
     Lovedek *lemarado = NULL;
@@ -279,7 +292,7 @@ void lovedekFrissites(Lovedek **lovedek, Peldany *jatekos) {
     }
 }
 
-
+/** Ellenség példányt hoz létre és inicializája azt. Hozzáfűzi a láncolt listához.*/
 void ellensegHozzaad(int x, int y, Peldany *jatekos, SDL_Texture *ellenseg, Palya *palya) {
     Peldany *e;
 
@@ -301,6 +314,7 @@ void ellensegHozzaad(int x, int y, Peldany *jatekos, SDL_Texture *ellenseg, Paly
     e->hatokor = 32;
 }
 
+/** Az ellenséget elhelyezi a képernyő egy random, kívüleső pontjára és beállítja az időzítőt a következő ellenség sorsolásáig.*/
 void spawnEllenseg(SDL_Texture *ellenseg, Peldany *jatekos, Palya *palya) {
     int x, y;
 
@@ -336,6 +350,7 @@ void spawnEllenseg(SDL_Texture *ellenseg, Peldany *jatekos, Palya *palya) {
     }
 }
 
+/** Frissíti a "powerup" elemeket minden képkockára. Ha hozzáér a játékos, akkor típustól függően megnöveli az életét vagy a töltények számát, majd törli az elemet. */
 void powerupFrissites(PowerUp **powerup, Peldany *jatekos, Palya *palya) {
     PowerUp *p;
     PowerUp *lemarado = NULL;
@@ -374,6 +389,7 @@ void powerupFrissites(PowerUp **powerup, Peldany *jatekos, Palya *palya) {
     }
 }
 
+/** "Fő" frissiítő függvény, ami összefogja az összes frissitést és minden képkockára frissíti azokat.*/
 void jatekFrissites(Peldany *jatekos, Jatek *jatek, Palya *palya, SDL_Texture *golyo, SDL_Texture *ellenseg, SDL_Texture *elet, SDL_Texture *tolteny, Lovedek **lovedek, PowerUp **powerup) {
     jatekosFrissites(jatekos, jatek, palya, golyo, lovedek);
     peldanyFrissites(jatekos, palya, elet, tolteny, golyo, powerup, lovedek, jatek);
